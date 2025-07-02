@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cámara ESP32 - Petsear</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/estilodepaginainfor.css">
+    <style>
+        .camera-section {
+            padding: 5rem 0;
+            background: #f8f9fa;
+            margin-top: 76px; /* Add margin for fixed navbar */
+        }
+
+        .stream-container {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .camera-feed {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .camera-feed img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .camera-overlay {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0,0,0,0.7);
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .camera-controls {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .control-button {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 8px;
+            background: var(--primary-color);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .control-button:hover {
+            background: darken(var(--primary-color), 10%);
+            transform: translateY(-2px);
+        }
+
+        .control-button.active {
+            background: #dc3545;
+        }
+
+        .camera-settings {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .setting-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .setting-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #666;
+        }
+
+        .setting-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+
+        .recording-indicator {
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            color: #dc3545;
+            margin-top: 1rem;
+        }
+
+        .recording-indicator.active {
+            display: flex;
+        }
+
+        .recording-dot {
+            width: 10px;
+            height: 10px;
+            background: #dc3545;
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .snapshot-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .snapshot-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .snapshot-item img {
+            width: 100%;
+            aspect-ratio: 4/3;
+            object-fit: cover;
+        }
+
+        .snapshot-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            color: #fff;
+            padding: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .navbar-blur {
+            box-shadow: 0 2px 8px rgba(102,126,234,0.08);
+            transition: background 0.3s, backdrop-filter 0.3s;
+        }
+        .navbar-blur.navbar-transparent {
+            background: transparent !important;
+            backdrop-filter: blur(8px);
+        }
+        .navbar-blur.navbar-colored {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%) !important;
+            backdrop-filter: blur(8px);
+        }
+        .navbar-blur .navbar-nav .nav-link,
+        .navbar-blur .navbar-brand,
+        .navbar-blur .navbar-toggler,
+        .navbar-blur .navbar-toggler-icon {
+            color: #fff !important;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow-sm bg-gradient navbar-blur" style="background: transparent; transition: background 0.3s, backdrop-filter 0.3s; backdrop-filter: blur(8px);">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="Pagina con infor.html">
+                <img src="imagenes/Logoremo.png" alt="Logo Petsear" style="height: 48px; width: 48px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); background: #fff; padding: 2px;">
+                <span class="fw-bold fs-3" style="letter-spacing: 1px;">Petsear</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="Pagina con infor.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Pagina con infor.html#quienes-somos">Quiénes Somos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Pagina con infor.html#componentes">Componentes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="arduino-prototype.html">
+                            <i class="fas fa-microchip me-1"></i>Arduino
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="esp32-camera.html">
+                            <i class="fas fa-camera me-1"></i>ESP32 Cámara
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="fundaciones-panama.html">
+                            <i class="fas fa-heart me-1"></i>Fundaciones
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Camera Section -->
+    <section class="camera-section">
+        <div class="container">
+            <h1 class="text-center mb-5" data-aos="fade-up">Cámara ESP32</h1>
+
+            <div class="row">
+                <div class="col-lg-8">
+                    <!-- Stream Container -->
+                    <div class="stream-container" data-aos="fade-up">
+                        <div class="camera-feed" id="cameraFeedContainer">
+                            <!-- Aquí irá el stream de la cámara real -->
+                            <video id="cameraStream" autoplay playsinline muted style="width:100%;height:100%;object-fit:cover;display:none;"></video>
+                            <img src="imagenes/esp32.jpg" alt="Cámara en vivo" id="cameraFeed" style="width:100%;height:100%;object-fit:cover;">
+                            <div class="camera-overlay">
+                                <i class="fas fa-circle text-danger"></i> En vivo
+                            </div>
+                        </div>
+                        <div class="camera-controls">
+                            <button class="control-button" id="startStream">
+                                <i class="fas fa-play"></i> Iniciar
+                            </button>
+                            <button class="control-button" id="takeSnapshot">
+                                <i class="fas fa-camera"></i> Captura
+                            </button>
+                            <button class="control-button" id="startRecording">
+                                <i class="fas fa-video"></i> Grabar
+                            </button>
+                            <button class="control-button" id="toggleNightMode">
+                                <i class="fas fa-moon"></i> Modo Nocturno
+                            </button>
+                        </div>
+                        <div class="recording-indicator" id="recordingIndicator">
+                            <div class="recording-dot"></div>
+                            <span>Grabando...</span>
+                        </div>
+                    </div>
+
+                    <!-- Snapshot Gallery -->
+                    <div class="snapshot-gallery" data-aos="fade-up">
+                        <div class="snapshot-item">
+                            <img src="imagenes/perroacostado.jpg" alt="Captura 1">
+                            <div class="snapshot-info">
+                                12:30 PM - 15/03/2024
+                            </div>
+                        </div>
+                        <div class="snapshot-item">
+                            <img src="imagenes/dogcats.jpg" alt="Captura 2">
+                            <div class="snapshot-info">
+                                12:45 PM - 15/03/2024
+                            </div>
+                        </div>
+                        <div class="snapshot-item">
+                            <img src="imagenes/chicalindacats.jpg" alt="Captura 3">
+                            <div class="snapshot-info">
+                                01:00 PM - 15/03/2024
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <!-- Camera Settings -->
+                    <div class="camera-settings" data-aos="fade-up">
+                        <h3 class="mb-4">Configuración de la Cámara</h3>
+                        
+                        <div class="setting-group">
+                            <label>Resolución</label>
+                            <select id="resolution">
+                                <option value="1080p">1080p (Full HD)</option>
+                                <option value="720p">720p (HD)</option>
+                                <option value="480p">480p (SD)</option>
+                            </select>
+                        </div>
+
+                        <div class="setting-group">
+                            <label>Calidad</label>
+                            <select id="quality">
+                                <option value="high">Alta</option>
+                                <option value="medium">Media</option>
+                                <option value="low">Baja</option>
+                            </select>
+                        </div>
+
+                        <div class="setting-group">
+                            <label>FPS</label>
+                            <select id="fps">
+                                <option value="30">30 FPS</option>
+                                <option value="24">24 FPS</option>
+                                <option value="15">15 FPS</option>
+                            </select>
+                        </div>
+
+                        <div class="setting-group">
+                            <label>Modo de Enfoque</label>
+                            <select id="focusMode">
+                                <option value="auto">Automático</option>
+                                <option value="manual">Manual</option>
+                                <option value="continuous">Continuo</option>
+                            </select>
+                        </div>
+
+                        <div class="setting-group">
+                            <label>Balance de Blancos</label>
+                            <select id="whiteBalance">
+                                <option value="auto">Automático</option>
+                                <option value="sunny">Soleado</option>
+                                <option value="cloudy">Nublado</option>
+                                <option value="night">Nocturno</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-modern py-5" style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); color: #fff;">
+        <div class="container">
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-4 col-md-6 text-center text-lg-start mb-4 mb-lg-0">
+                    <div class="footer-brand d-flex align-items-center justify-content-center justify-content-lg-start gap-3">
+                        <img src="imagenes/Logoremo.png" alt="Petsear Logo" class="footer-logo" style="height: 48px; width: 48px; border-radius: 12px; background: #fff; padding: 2px; box-shadow: 0 2px 8px rgba(0,0,0,0.12);">
+                        <h3 class="fw-bold mb-0">Petsear</h3>
+                    </div>
+                    <p class="text-light mt-3 mb-0">
+                        Monitoreo inteligente y tecnología innovadora para el bienestar de tus mascotas.
+                    </p>
+                </div>
+                <div class="col-lg-4 col-md-6 text-center mb-4 mb-lg-0">
+                    <div class="footer-section">
+                        <h5 class="fw-bold mb-3">Navegación</h5>
+                        <ul class="footer-links list-unstyled mb-0">
+                            <li><a href="Pagina con infor.html" class="text-light">Inicio</a></li>
+                            <li><a href="Pagina con infor.html#quienes-somos" class="text-light">Quiénes Somos</a></li>
+                            <li><a href="Pagina con infor.html#componentes" class="text-light">Componentes</a></li>
+                            <li><a href="arduino-prototype.html" class="text-light">Arduino</a></li>
+                            <li><a href="fundaciones-panama.html" class="text-light">Fundaciones</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12 text-center text-lg-end">
+                    <div class="social-links-footer d-flex justify-content-center justify-content-lg-end gap-3 mb-3" data-aos="fade-left">
+                        <a href="#" class="social-link-footer" title="Facebook"><i class="fab fa-facebook-f fa-lg"></i></a>
+                        <a href="#" class="social-link-footer" title="Twitter"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="social-link-footer" title="Instagram"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="#" class="social-link-footer" title="LinkedIn"><i class="fab fa-linkedin-in fa-lg"></i></a>
+                        <a href="#" class="social-link-footer" title="YouTube"><i class="fab fa-youtube fa-lg"></i></a>
+                    </div>
+                    <div class="footer-badges d-flex justify-content-center justify-content-lg-end gap-2">
+                        <span class="badge bg-success"><i class="fas fa-shield-alt me-1"></i>Seguro</span>
+                        <span class="badge bg-info"><i class="fas fa-certificate me-1"></i>Certificado</span>
+                        <span class="badge bg-warning"><i class="fas fa-star me-1"></i>Premium</span>
+                    </div>
+                </div>
+            </div>
+            <hr class="footer-divider my-4" style="border-color: rgba(255,255,255,0.2);">
+            <div class="footer-bottom text-center">
+                <p class="mb-0 text-light">&copy; 2024 Petsear. Todos los derechos reservados. | Hecho con <span style="color: #ffb6b6;">❤️</span> para las mascotas</p>
+            </div>
+        </div>
+    </footer>
+    <button class="back-to-top-modern" id="backToTop" style="position: fixed; bottom: 32px; right: 32px; z-index: 999; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; border: none; border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(102,126,234,0.2); font-size: 1.5rem; cursor: pointer; display: none;"><i class="fas fa-arrow-up"></i></button>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+        // Navbar background on scroll
+        function updateNavbarColor() {
+            const navbar = document.querySelector('.navbar-blur');
+            if (!navbar) return;
+            if (window.scrollY > 60) {
+                navbar.classList.add('navbar-colored');
+                navbar.classList.remove('navbar-transparent');
+            } else {
+                navbar.classList.add('navbar-transparent');
+                navbar.classList.remove('navbar-colored');
+            }
+        }
+        window.addEventListener('scroll', updateNavbarColor);
+        document.addEventListener('DOMContentLoaded', updateNavbarColor);
+        // Back to Top button
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 200) {
+                backToTop.style.display = 'flex';
+            } else {
+                backToTop.style.display = 'none';
+            }
+        });
+        backToTop.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html> 

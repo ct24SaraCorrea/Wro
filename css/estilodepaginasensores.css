@@ -1,0 +1,33 @@
+
+body {
+    background-image: url('https://i.pinimg.com/736x/ff/a9/1c/ffa91c3a97ae2d9eba1738a8faf6b3c0.jpg'); /* Ruta de la imagen */
+    background-size: cover; /* Ajusta la imagen al tamaño de la pantalla */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    height: 100vh; /* Asegura que cubra toda la pantalla */
+    margin: 0; /* Elimina márgenes */
+    padding: 0;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 175px; /* Espacio entre la cabecera y el contenido */
+  }
+  
+  /* Contenedor Flex */
+  .flex-container {
+    display: flex;
+    justify-content: space-between; /* Espacio entre columnas */
+    gap: 20px; /* Espacio entre las columnas */
+    max-width: 1200px; /* Limita el tamaño máximo de la fila */
+    margin: 0 auto; /* Centra el contenedor horizontalmente */
+    padding: 0 20px; /* Añade margen de los lados */
+  }
+  
+  /* Columnas */
+  .column {
+    flex: 1; /* Cada columna ocupa el mismo espacio */
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+  }

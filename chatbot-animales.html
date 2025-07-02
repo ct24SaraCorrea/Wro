@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐾 Petsear - Asistente Virtual de Animales</title>
+    <link rel="stylesheet" href="css/estilochatbot.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <img src="imagenes/Logo.jpg" alt="Petsear Logo" class="logo-img">
+                <h1>Petsear</h1>
+            </div>
+            <h2>🐾 Asistente Virtual de Animales</h2>
+            <p>Tu compañero experto en mascotas y animales</p>
+        </header>
+
+        <!-- Chat Container -->
+        <div class="chat-container">
+            <div class="chat-header">
+                <div class="chat-info">
+                    <i class="fas fa-robot"></i>
+                    <span>Asistente Petsear</span>
+                </div>
+                <div class="chat-status">
+                    <span class="status-dot"></span>
+                    En línea
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <!-- Mensajes se agregarán dinámicamente -->
+            </div>
+
+            <div class="chat-input-container">
+                <div class="input-wrapper">
+                    <input type="text" id="messageInput" placeholder="Escribe tu pregunta sobre animales..." maxlength="500">
+                    <button id="sendButton" class="send-btn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="quick-questions">
+                    <button class="quick-btn" onclick="askQuestion('¿Cómo cuidar a un perro?')">Cuidado de perros</button>
+                    <button class="quick-btn" onclick="askQuestion('¿Qué comen los gatos?')">Alimentación felina</button>
+                    <button class="quick-btn" onclick="askQuestion('¿Cómo entrenar a mi mascota?')">Entrenamiento</button>
+                    <button class="quick-btn" onclick="askQuestion('¿Cuáles son las mascotas más populares?')">Mascotas populares</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar con información -->
+        <div class="sidebar">
+            <div class="sidebar-section">
+                <h3><i class="fas fa-lightbulb"></i> Consejos Rápidos</h3>
+                <ul class="tips-list">
+                    <li>💧 Siempre mantén agua fresca disponible</li>
+                    <li>🏥 Visitas regulares al veterinario</li>
+                    <li>🏃 Ejercicio diario para perros</li>
+                    <li>🧶 Estimulación mental para gatos</li>
+                    <li>🥗 Alimentación balanceada</li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3><i class="fas fa-heart"></i> Temas Populares</h3>
+                <div class="popular-topics">
+                    <span class="topic-tag">Salud</span>
+                    <span class="topic-tag">Alimentación</span>
+                    <span class="topic-tag">Comportamiento</span>
+                    <span class="topic-tag">Adopción</span>
+                    <span class="topic-tag">Emergencias</span>
+                    <span class="topic-tag">Razas</span>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3><i class="fas fa-phone"></i> Contacto de Emergencia</h3>
+                <p>Veterinario 24/7: <strong>123-456-7890</strong></p>
+                <p>Control Animal: <strong>987-654-3210</strong></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading indicator -->
+    <div class="loading-indicator" id="loadingIndicator">
+        <div class="loading-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <p>Asistente escribiendo...</p>
+    </div>
+
+    <script src="js/chatbot-animales.js"></script>
+</body>
+</html> 

@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petsear - Tu Compañero de Mascotas</title>
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/estilodepaginainfor.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow-sm bg-gradient navbar-blur" style="background: transparent; transition: background 0.3s, backdrop-filter 0.3s; backdrop-filter: blur(8px);">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="Pagina con infor.html">
+                <img src="imagenes/Logoremo.png" alt="Logo Petsear" style="height: 48px; width: 48px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); background: #fff; padding: 2px;">
+                <span class="fw-bold fs-3" style="letter-spacing: 1px;">Petsear</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="Pagina con infor.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#quienes-somos">Quiénes Somos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#componentes">Componentes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="arduino-prototype.html">
+                            <i class="fas fa-microchip me-1"></i>Arduino
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="esp32-camera.html">
+                            <i class="fas fa-camera me-1"></i>ESP32 Cámara
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="fundaciones-panama.html">
+                            <i class="fas fa-heart me-1"></i>Fundaciones
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section Mejorado -->
+    <section id="inicio" class="hero-section">
+        <div id="hero-carousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="2"></button>
+                <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="3"></button>
+                <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="4"></button>
+            </div>
+
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=1200&q=80" class="d-block w-100" alt="Perro feliz con dueño">
+                    <div class="carousel-caption animate__animated animate__fadeInDown">
+                        <h1 data-aos="fade-up">Bienvenido a Petsear</h1>
+                        <p data-aos="fade-up" data-aos-delay="200">Tecnología, amor y seguridad para tus mejores amigos</p>
+                        <a href="#quienes-somos" class="btn btn-lg btn-gradient shadow-lg px-4 py-2 mt-3" data-aos="zoom-in" data-aos-delay="400">
+                            Descubre nuestra misión <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="imagenes/Gatoss.webp" class="d-block w-100" alt="Gato en casa">
+                    <div class="carousel-caption animate__animated animate__fadeInDown">
+                        <h1 data-aos="fade-up">Cuidamos a todos</h1>
+                        <p data-aos="fade-up" data-aos-delay="200">Gatos, perros y más: todos son familia</p>
+                        <a href="#componentes" class="btn btn-lg btn-gradient shadow-lg px-4 py-2 mt-3" data-aos="zoom-in" data-aos-delay="400">
+                            Conoce nuestra tecnología <i class="fas fa-microchip ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&w=1200&q=80" class="d-block w-100" alt="Persona abrazando perro">
+                    <div class="carousel-caption animate__animated animate__fadeInDown">
+                        <h1 data-aos="fade-up">Conexión real</h1>
+                        <p data-aos="fade-up" data-aos-delay="200">La felicidad de tu mascota es nuestra prioridad</p>
+                        <a href="#faq" class="btn btn-lg btn-gradient shadow-lg px-4 py-2 mt-3" data-aos="zoom-in" data-aos-delay="400">
+                            Preguntas frecuentes <i class="fas fa-question-circle ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="https://images.pexels.com/photos/406014/pexels-photo-406014.jpeg?auto=compress&w=1200&q=80" class="d-block w-100" alt="Niña con gato">
+                    <div class="carousel-caption animate__animated animate__fadeInDown">
+                        <h1 data-aos="fade-up">Crecemos juntos</h1>
+                        <p data-aos="fade-up" data-aos-delay="200">Acompañamos cada etapa de tu mascota</p>
+                        <a href="#contact" class="btn btn-lg btn-gradient shadow-lg px-4 py-2 mt-3" data-aos="zoom-in" data-aos-delay="400">
+                            Contáctanos <i class="fas fa-envelope ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=1200&q=80" class="d-block w-100" alt="Grupo de personas y mascotas">
+                    <div class="carousel-caption animate__animated animate__fadeInDown">
+                        <h1 data-aos="fade-up">Comunidad Petsear</h1>
+                        <p data-aos="fade-up" data-aos-delay="200">Juntos por el bienestar animal</p>
+                        <a href="#newsletter" class="btn btn-lg btn-gradient shadow-lg px-4 py-2 mt-3" data-aos="zoom-in" data-aos-delay="400">
+                            Únete a la comunidad <i class="fas fa-users ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#hero-carousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#hero-carousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section py-5">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-4" data-aos="fade-up">
+                    <i class="fas fa-chart-line fa-3x mb-3"></i>
+                    <h3>Resultados Increíbles</h3>
+                    <p>Monitoreo preciso y confiable de tu mascota</p>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                    <i class="fas fa-tags fa-3x mb-3"></i>
+                    <h3>Precios Accesibles</h3>
+                    <p>Soluciones económicas para el cuidado de tu mascota</p>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="400">
+                    <i class="fas fa-heart fa-3x mb-3"></i>
+                    <h3>Experiencias Únicas</h3>
+                    <p>Conecta con tu mascota de una manera especial</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quiénes Somos Section Mejorado -->
+    <section id="quienes-somos" class="about-section py-5">
+        <div class="container">
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-8 text-center">
+                    <h2 class="display-4 fw-bold mb-4" data-aos="fade-up">Quiénes Somos</h2>
+                    <p class="lead text-muted" data-aos="fade-up" data-aos-delay="200">
+                        Un equipo apasionado por crear un mundo mejor para las mascotas
+                    </p>
+                </div>
+            </div>
+            <div class="row align-items-center mb-5">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <div class="about-image-container position-relative">
+                        <img src="imagenes/Us.jpeg" alt="Nuestro equipo" class="img-fluid rounded-4 shadow-lg">
+                        <div class="floating-card">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar-group me-3">
+                                    <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?auto=format&fit=crop&w=50&q=80" 
+                                         alt="Miembro del equipo" class="avatar">
+                                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=50&q=80" 
+                                         alt="Miembro del equipo" class="avatar">
+                                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=50&q=80" 
+                                         alt="Miembro del equipo" class="avatar">
+                                </div>
+                                <div>
+                                    <h6 class="mb-0 fw-bold">Equipo Petsear</h6>
+                                    <small class="text-muted">Apasionadas por los animales</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="about-content">
+                        <h3 class="h2 fw-bold mb-4">Nuestra Historia</h3>
+                        <p class="lead mb-4">
+                            Somos un grupo de jóvenes apasionadas por los animales que decidimos unir fuerzas para crear 
+                            <strong>Petsear</strong>, una plataforma que combina tecnología y amor por las mascotas.
+                        </p>
+                        <p class="mb-4">
+                            Nacimos con un propósito claro: <strong>cuidar, proteger y darles voz</strong> a aquellos que 
+                            no pueden defenderse por sí mismos. Nuestro sueño es crear un mundo donde los animales vivan 
+                            seguros, amados y respetados.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- Valores del Equipo -->
+            <div class="row g-4 mt-5">
+                <div class="col-md-4" data-aos="fade-up">
+                    <div class="value-card text-center p-4 h-100">
+                        <div class="value-icon mb-3">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Pasión</h4>
+                        <p class="text-muted">
+                            Cada día nos despertamos con la misma pasión por ayudar a las mascotas 
+                            y sus dueños a tener una vida mejor juntos.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="value-card text-center p-4 h-100">
+                        <div class="value-icon mb-3">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Innovación</h4>
+                        <p class="text-muted">
+                            Utilizamos la tecnología más avanzada para crear soluciones 
+                            que realmente mejoren la vida de las mascotas.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="400">
+                    <div class="value-card text-center p-4 h-100">
+                        <div class="value-icon mb-3">
+                            <i class="fas fa-hands-helping"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Compromiso</h4>
+                        <p class="text-muted">
+                            Nos comprometemos a estar ahí para ti y tu mascota en cada 
+                            momento, brindando el mejor servicio posible.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Estilos para la sección Quiénes Somos -->
+    <style>
+    /* Fondo con imagen para Quiénes Somos */
+    .about-section {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%), url('https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=1200&q=80');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: relative;
+    }
+    .about-section::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(255,255,255,0.7);
+      z-index: 0;
+    }
+    .about-section > .container, .about-section * { position: relative; z-index: 1; }
+    .about-image-container {
+        position: relative;
+    }
+    .floating-card {
+        position: absolute;
+        bottom: -20px;
+        right: -20px;
+        background: white;
+        padding: 1rem;
+        border-radius: 1rem;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        backdrop-filter: blur(10px);
+    }
+    .avatar-group {
+        display: flex;
+        align-items: center;
+    }
+    .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 3px solid white;
+        margin-left: -10px;
+        object-fit: cover;
+    }
+    .avatar:first-child {
+        margin-left: 0;
+    }
+    .value-card {
+        background: white;
+        border-radius: 1.5rem;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        transition: transform 0.3s, box-shadow 0.3s;
+        border: 1px solid rgba(102,126,234,0.1);
+    }
+    .value-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 40px rgba(102,126,234,0.15);
+    }
+    .value-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        color: white;
+        font-size: 2rem;
+        box-shadow: 0 8px 24px rgba(102,126,234,0.3);
+    }
+    .stats-row {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 1rem;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    .stat-item h4 {
+        color: #667eea;
+        margin-bottom: 0.5rem;
+    }
+    @media (max-width: 768px) {
+        .floating-card {
+            position: relative;
+            bottom: auto;
+            right: auto;
+            margin-top: 1rem;
+        }
+        .stats-row {
+            flex-direction: column;
+            gap: 1rem;
+        }
+    }
+    </style>
+
+    <!-- Componentes Section Mejorado -->
+    <section id="componentes" class="components-section py-5">
+        <div class="container">
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-8 text-center">
+                    <h2 class="display-4 fw-bold mb-4" data-aos="fade-up">Nuestros Componentes</h2>
+                    <p class="lead text-muted" data-aos="fade-up" data-aos-delay="200">
+                        Tecnología de vanguardia para el cuidado integral de tu mascota
+                    </p>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-lg-6" data-aos="fade-up">
+                    <div class="component-card-modern">
+                        <div class="card-header-modern">
+                            <div class="component-icon">
+                                <i class="fas fa-microchip"></i>
+                            </div>
+                            <h4 class="component-title">ESP32 Microcontrolador</h4>
+                        </div>
+                        <div class="card-body-modern">
+                            <img src="imagenes/Esp32.png" 
+                                 alt="ESP32" class="component-image">
+                            <div class="component-content">
+                                <p class="component-description">
+                                    Microcontrolador revolucionario con capacidades Wi-Fi y Bluetooth integradas. 
+                                    Procesamiento de alta velocidad para monitoreo en tiempo real.
+                                </p>
+                                <div class="component-features">
+                                    <span class="feature-tag">Wi-Fi 802.11 b/g/n</span>
+                                    <span class="feature-tag">Bluetooth 4.2</span>
+                                    <span class="feature-tag">Dual Core</span>
+                                    <span class="feature-tag">240MHz</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="component-card-modern">
+                        <div class="card-header-modern">
+                            <div class="component-icon">
+                                <i class="fas fa-solar-panel"></i>
+                            </div>
+                            <h4 class="component-title">Celdas Solares</h4>
+                        </div>
+                        <div class="card-body-modern">
+                            <img src="imagenes/Celdas.webp" 
+                                 alt="Celdas Solares" class="component-image">
+                            <div class="component-content">
+                                <p class="component-description">
+                                    Energía renovable y sostenible. Carga automática durante el día 
+                                    para funcionamiento continuo sin interrupciones.
+                                </p>
+                                <div class="component-features">
+                                    <span class="feature-tag">Renovable</span>
+                                    <span class="feature-tag">Auto-carga</span>
+                                    <span class="feature-tag">Eficiente</span>
+                                    <span class="feature-tag">Ecológico</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6" data-aos="fade-up">
+                    <div class="component-card-modern">
+                        <div class="card-header-modern">
+                            <div class="component-icon">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                            <h4 class="component-title">Cámara HD</h4>
+                        </div>
+                        <div class="card-body-modern">
+                            <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=400&q=80" 
+                                 alt="Cámara HD" class="component-image">
+                            <div class="component-content">
+                                <p class="component-description">
+                                    Cámara de alta definición con visión nocturna. 
+                                    Transmisión en vivo y grabación automática de eventos importantes.
+                                </p>
+                                <div class="component-features">
+                                    <span class="feature-tag">1080p HD</span>
+                                    <span class="feature-tag">Visión Nocturna</span>
+                                    <span class="feature-tag">En Vivo</span>
+                                    <span class="feature-tag">Grabación</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="component-card-modern">
+                        <div class="card-header-modern">
+                            <div class="component-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h4 class="component-title">Carcasa Protectora</h4>
+                        </div>
+                        <div class="card-body-modern">
+                            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=400&q=80" 
+                                 alt="Carcasa Protectora" class="component-image">
+                            <div class="component-content">
+                                <p class="component-description">
+                                    Carcasa resistente a agua, polvo y golpes. 
+                                    Diseño ergonómico y cómodo para tu mascota.
+                                </p>
+                                <div class="component-features">
+                                    <span class="feature-tag">IP67</span>
+                                    <span class="feature-tag">Antigolpes</span>
+                                    <span class="feature-tag">Ligero</span>
+                                    <span class="feature-tag">Ergonómico</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Estilos para la sección Componentes -->
+    <style>
+    /* Fondo con imagen para Componentes */
+    .components-section {
+      background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%), url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=1200&q=80');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: relative;
+    }
+    .components-section::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(255,255,255,0.7);
+      z-index: 0;
+    }
+    .components-section > .container, .components-section * { position: relative; z-index: 1; }
+    .component-card-modern {
+        background: white;
+        border-radius: 1.5rem;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+        overflow: hidden;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(102,126,234,0.1);
+        height: 100%;
+    }
+    .component-card-modern:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 16px 48px rgba(102,126,234,0.15);
+    }
+    .card-header-modern {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    .component-icon {
+        width: 60px;
+        height: 60px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        backdrop-filter: blur(10px);
+    }
+    .component-title {
+        margin: 0;
+        font-weight: 600;
+        font-size: 1.25rem;
+    }
+    .card-body-modern {
+        padding: 1.5rem;
+    }
+    .component-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 1rem;
+        margin-bottom: 1rem;
+    }
+    .component-description {
+        color: #6c757d;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+    }
+    .component-features {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    .feature-tag {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 1rem;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+    @media (max-width: 768px) {
+        .card-header-modern {
+            flex-direction: column;
+            text-align: center;
+            gap: 0.5rem;
+        }
+        .component-features {
+            justify-content: center;
+        }
+    }
+    </style>
+
+    <!-- FAQ Section Mejorado -->
+    <section id="faq" class="faq-section py-5">
+        <div class="container">
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-8 text-center">
+                    <h2 class="display-4 fw-bold mb-4" data-aos="fade-up">Preguntas Frecuentes</h2>
+                    <p class="lead text-muted" data-aos="fade-up" data-aos-delay="200">
+                        Resolvemos todas tus dudas sobre Petsear y el cuidado de mascotas
+                    </p>
+                </div>
+            </div>
+            
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="accordion custom-accordion" id="faqAccordion">
+                        <div class="accordion-item" data-aos="fade-up">
+                            <h3 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                    <i class="fas fa-microchip me-3"></i>
+                                    ¿Cuál es el componente principal del dispositivo Petsear?
+                                </button>
+                            </h3>
+                            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    <p>El <strong>ESP32</strong> es nuestro componente principal, un microcontrolador revolucionario que incluye:</p>
+                                    <ul>
+                                        <li>Wi-Fi y Bluetooth integrados</li>
+                                        <li>Procesador dual-core de 240MHz</li>
+                                        <li>Cámara integrada para monitoreo visual</li>
+                                        <li>Bajo consumo energético</li>
+                                    </ul>
+                                    <p>Esta tecnología nos permite ofrecer una experiencia completa y cómoda para el cuidado de tu mascota.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item" data-aos="fade-up" data-aos-delay="100">
+                            <h3 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                    <i class="fas fa-calendar-alt me-3"></i>
+                                    ¿Cuándo estará disponible Petsear para compra?
+                                </button>
+                            </h3>
+                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    <p>Estamos trabajando arduamente para lanzar Petsear al mercado. Nuestro cronograma incluye:</p>
+                                    <ul>
+                                        <li><strong>Fase de Pruebas:</strong> Finalización de prototipos y testing</li>
+                                        <li><strong>Certificaciones:</strong> Cumplimiento de estándares de seguridad</li>
+                                        <li><strong>Producción:</strong> Fabricación a escala comercial</li>
+                                        <li><strong>Lanzamiento:</strong> Disponibilidad en tiendas y online</li>
+                                    </ul>
+                                    <p>¡Mantente atento a nuestras actualizaciones y suscríbete a nuestro boletín para ser el primero en saber!</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item" data-aos="fade-up" data-aos-delay="200">
+                            <h3 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                    <i class="fas fa-cat me-3"></i>
+                                    ¿Es compatible con gatos y otras mascotas?
+                                </button>
+                            </h3>
+                            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    <p>¡Absolutamente! Nuestro dispositivo está diseñado específicamente para ser versátil:</p>
+                                    <ul>
+                                        <li><strong>Perros:</strong> Todas las razas y tamaños</li>
+                                        <li><strong>Gatos:</strong> Diseño ligero y cómodo</li>
+                                        <li><strong>Otras mascotas:</strong> Adaptable según necesidades</li>
+                                    </ul>
+                                    <p>Ofrecemos diferentes tamaños de carcasa y configuraciones personalizables para adaptarse a las necesidades específicas de cada mascota.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item" data-aos="fade-up" data-aos-delay="400">
+                            <h3 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                                    <i class="fas fa-shield-alt me-3"></i>
+                                    ¿Es seguro para mi mascota?
+                                </button>
+                            </h3>
+                            <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    <p>La seguridad de tu mascota es nuestra máxima prioridad:</p>
+                                    <ul>
+                                        <li><strong>Materiales seguros:</strong> Plásticos no tóxicos certificados</li>
+                                        <li><strong>Protección IP67:</strong> Resistente a agua y polvo</li>
+                                        <li><strong>Diseño ergonómico:</strong> Sin bordes afilados</li>
+                                        <li><strong>Peso mínimo:</strong> No afecta la movilidad</li>
+                                        <li><strong>Certificaciones:</strong> Cumple estándares internacionales</li>
+                                    </ul>
+                                    <p>Todos nuestros componentes han sido probados exhaustivamente para garantizar la seguridad.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item" data-aos="fade-up" data-aos-delay="500">
+                            <h3 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+                                    <i class="fas fa-mobile-alt me-3"></i>
+                                    ¿Qué aplicaciones móviles necesito?
+                                </button>
+                            </h3>
+                            <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    <p>Nuestra aplicación Petsear está disponible para:</p>
+                                    <ul>
+                                        <li><strong>iOS:</strong> iPhone y iPad (iOS 12+)</li>
+                                        <li><strong>Android:</strong> Todos los dispositivos (Android 8+)</li>
+                                        <li><strong>Web:</strong> Acceso desde cualquier navegador</li>
+                                    </ul>
+                                    <p>La app incluye: monitoreo en tiempo real, historial de actividad, alertas personalizables, y chat con veterinarios.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item" data-aos="fade-up" data-aos-delay="700">
+                            <h3 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq8">
+                                    <i class="fas fa-headset me-3"></i>
+                                    ¿Ofrecen soporte técnico?
+                                </button>
+                            </h3>
+                            <div id="faq8" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    <p>Ofrecemos un sistema de soporte completo:</p>
+                                    <ul>
+                                        <li><strong>Chat en vivo:</strong> 24/7 con especialistas</li>
+                                        <li><strong>Teléfono:</strong> Línea directa de soporte</li>
+                                        <li><strong>Email:</strong> Respuesta en menos de 2 horas</li>
+                                        <li><strong>Video llamadas:</strong> Soporte remoto personalizado</li>
+                                        <li><strong>Garantía:</strong> 2 años de cobertura completa</li>
+                                    </ul>
+                                    <p>Nuestro equipo está capacitado para resolver cualquier problema técnico o duda sobre el uso del dispositivo.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Estilos para la sección FAQ -->
+    <style>
+    .faq-section {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    }
+    .custom-accordion .accordion-item {
+        border: none;
+        margin-bottom: 1rem;
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        background: white;
+    }
+    .custom-accordion .accordion-button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 1.5rem;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+    .custom-accordion .accordion-button:not(.collapsed) {
+        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        color: white;
+        box-shadow: none;
+    }
+    .custom-accordion .accordion-button:focus {
+        box-shadow: none;
+        border: none;
+    }
+    .custom-accordion .accordion-button::after {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    }
+    .custom-accordion .accordion-body {
+        padding: 2rem;
+        background: white;
+        color: #6c757d;
+        line-height: 1.6;
+    }
+    .custom-accordion .accordion-body ul {
+        margin-top: 1rem;
+        padding-left: 1.5rem;
+    }
+    .custom-accordion .accordion-body li {
+        margin-bottom: 0.5rem;
+    }
+    .custom-accordion .accordion-body strong {
+        color: #667eea;
+    }
+    @media (max-width: 768px) {
+        .custom-accordion .accordion-button {
+            font-size: 1rem;
+            padding: 1rem;
+        }
+        .custom-accordion .accordion-body {
+            padding: 1.5rem;
+        }
+    }
+    </style>
+
+    <!-- Contact Section Mejorado -->
+    <section id="contact" class="contact-section py-5">
+        <div class="container">
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-8 text-center">
+                    <h2 class="display-4 fw-bold mb-4" data-aos="fade-up">Contáctanos</h2>
+                    <p class="lead text-muted" data-aos="fade-up" data-aos-delay="200">
+                        Estamos aquí para ayudarte. ¡Conversemos sobre cómo podemos mejorar la vida de tu mascota!
+                    </p>
+                </div>
+            </div>
+
+            <div class="row g-5">
+                <!-- Información de Contacto -->
+                <div class="col-lg-5" data-aos="fade-right">
+                    <div class="contact-info-modern">
+                        <h3 class="h2 fw-bold mb-4">Hablemos</h3>
+                        <p class="lead mb-4">
+                            Nuestro equipo está listo para responder todas tus preguntas y ayudarte 
+                            a encontrar la mejor solución para tu mascota.
+                        </p>
+                        
+                        <div class="contact-items">
+                            <div class="contact-item" data-aos="fade-up" data-aos-delay="100">
+                                <div class="contact-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <h5 class="fw-bold">Ubicación</h5>
+                                    <p>Ciudad de Panamá, Panamá<br>
+                                    <small class="text-muted">Centro de Innovación Tecnológica</small></p>
+                                </div>
+                            </div>
+
+                            <div class="contact-item" data-aos="fade-up" data-aos-delay="200">
+                                <div class="contact-icon">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <h5 class="fw-bold">Email</h5>
+                                    <p>info@petsear.com<br>
+                                    <small class="text-muted">soporte@petsear.com</small></p>
+                                </div>
+                            </div>
+
+                            <div class="contact-item" data-aos="fade-up" data-aos-delay="300">
+                                <div class="contact-icon">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <h5 class="fw-bold">Teléfono</h5>
+                                    <p>+507 123-4567<br>
+                                    <small class="text-muted">Lun-Vie: 8AM-6PM</small></p>
+                                </div>
+                            </div>
+
+                            <div class="contact-item" data-aos="fade-up" data-aos-delay="400">
+                                <div class="contact-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <h5 class="fw-bold">Horarios</h5>
+                                    <p>Lunes a Viernes: 8:00 AM - 6:00 PM<br>
+                                    <small class="text-muted">Sábados: 9:00 AM - 2:00 PM</small></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="social-links-modern mt-5" data-aos="fade-up" data-aos-delay="500">
+                            <h5 class="fw-bold mb-3">Síguenos</h5>
+                            <div class="social-icons">
+                                <a href="#" class="social-icon" title="Facebook">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="#" class="social-icon" title="Twitter">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="#" class="social-icon" title="Instagram">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="#" class="social-icon" title="LinkedIn">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                                <a href="#" class="social-icon" title="YouTube">
+                                    <i class="fab fa-youtube"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulario de Contacto -->
+                <div class="col-lg-7" data-aos="fade-left">
+                    <div class="contact-form-modern">
+                        <h3 class="h2 fw-bold mb-4">Envíanos un mensaje</h3>
+                        <form id="contactForm" class="contact-form">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="nombre" placeholder="Nombre" required>
+                                        <label for="nombre">Nombre completo</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="email" class="form-control" id="email" placeholder="Email" required>
+                                        <label for="email">Correo electrónico</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="tel" class="form-control" id="telefono" placeholder="Teléfono">
+                                        <label for="telefono">Teléfono (opcional)</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="tipoMascota">
+                                            <option value="">Selecciona...</option>
+                                            <option value="perro">Perro</option>
+                                            <option value="gato">Gato</option>
+                                            <option value="otro">Otra mascota</option>
+                                        </select>
+                                        <label for="tipoMascota">Tipo de mascota</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="asunto" placeholder="Asunto" required>
+                                        <label for="asunto">Asunto</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <textarea class="form-control" id="mensaje" rows="5" placeholder="Mensaje" required></textarea>
+                                        <label for="mensaje">Tu mensaje</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-gradient btn-lg w-100">
+                                        <i class="fas fa-paper-plane me-2"></i>
+                                        Enviar Mensaje
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mapa -->
+            <div class="row mt-5">
+                <div class="col-12" data-aos="fade-up">
+                    <div class="map-container">
+                        <h3 class="h2 fw-bold mb-4 text-center">Nuestra Ubicación</h3>
+                        <div class="map-wrapper">
+                            <iframe 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126158.1234567890!2d-79.5342!3d8.9824!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8faca8c6c1c1c1c1%3A0x1c1c1c1c1c1c1c1c!2sCiudad+de+Panam%C3%A1%2C+Panam%C3%A1!5e0!3m2!1ses!2spa!4v1234567890123"
+                                width="100%" 
+                                height="400" 
+                                style="border:0; border-radius: 1rem;" 
+                                allowfullscreen="" 
+                                loading="lazy" 
+                                referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Estilos para la sección Contact -->
+    <style>
+    .contact-section {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    }
+    .contact-info-modern {
+        background: white;
+        padding: 2.5rem;
+        border-radius: 1.5rem;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+        height: 100%;
+    }
+    .contact-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border-radius: 1rem;
+        transition: all 0.3s ease;
+    }
+    .contact-item:hover {
+        background: rgba(102,126,234,0.05);
+        transform: translateX(5px);
+    }
+    .contact-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+        flex-shrink: 0;
+    }
+    .contact-details h5 {
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+    .contact-details p {
+        margin-bottom: 0;
+        color: #6c757d;
+    }
+    .social-links-modern {
+        border-top: 1px solid #e9ecef;
+        padding-top: 2rem;
+    }
+    .social-icons {
+        display: flex;
+        gap: 1rem;
+    }
+    .social-icon {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    .social-icon:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(102,126,234,0.3);
+        color: white;
+    }
+    .contact-form-modern {
+        background: white;
+        padding: 2.5rem;
+        border-radius: 1.5rem;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+        height: 100%;
+    }
+    .form-floating {
+        margin-bottom: 1rem;
+    }
+    .form-control, .form-select {
+        border: 2px solid #e9ecef;
+        border-radius: 1rem;
+        padding: 1rem;
+        transition: all 0.3s ease;
+    }
+    .form-control:focus, .form-select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102,126,234,0.25);
+    }
+    .form-floating label {
+        padding: 1rem;
+        color: #6c757d;
+    }
+    .map-container {
+        background: white;
+        padding: 2rem;
+        border-radius: 1.5rem;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    }
+    .map-wrapper {
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    @media (max-width: 768px) {
+        .contact-info-modern, .contact-form-modern {
+            padding: 1.5rem;
+        }
+        .social-icons {
+            justify-content: center;
+        }
+    }
+    </style>
+
+    <!-- Quick Navigation Section Mejorado -->
+    <section class="quick-nav-section py-5">
+        <div class="container">
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-8 text-center">
+                    <h2 class="display-4 fw-bold mb-4" data-aos="fade-up">Explora Petsear</h2>
+                    <p class="lead text-muted" data-aos="fade-up" data-aos-delay="200">
+                        Descubre todas las herramientas y recursos que hemos creado para ti y tu mascota
+                    </p>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6" data-aos="fade-up">
+                    <div class="explore-card">
+                        <div class="card-image">
+                            <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=400&q=80" 
+                                 alt="Prototipo Arduino" class="w-100">
+                            <div class="card-overlay">
+                                <i class="fas fa-microchip"></i>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-icon">
+                                <i class="fas fa-microchip"></i>
+                            </div>
+                            <h4 class="card-title">Prototipo Arduino</h4>
+                            <p class="card-description">
+                                Descubre nuestro prototipo Arduino con sensores avanzados de ritmo cardíaco 
+                                para el monitoreo completo de mascotas.
+                            </p>
+                            <div class="card-features">
+                                <span class="feature-badge">Sensores</span>
+                                <span class="feature-badge">IoT</span>
+                            </div>
+                            <a href="arduino-prototype.html" class="explore-btn">
+                                <span>Explorar Arduino</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="explore-card">
+                        <div class="card-image">
+                            <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=400&q=80" 
+                                 alt="Cámara ESP32" class="w-100">
+                            <div class="card-overlay">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-icon">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                            <h4 class="card-title">Cámara ESP32</h4>
+                            <p class="card-description">
+                                Explora nuestro sistema de cámara ESP32 para vigilancia remota 
+                                y monitoreo en tiempo real de tu mascota.
+                            </p>
+                            <div class="card-features">
+                                <span class="feature-badge">HD</span>
+                                <span class="feature-badge">En Vivo</span>
+                                <span class="feature-badge">Remoto</span>
+                            </div>
+                            <a href="esp32-camera.html" class="explore-btn">
+                                <span>Ver Cámara</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                    <div class="explore-card">
+                        <div class="card-image">
+                            <img src="https://images.unsplash.com/photo-1450778869180-41d0601e046e?auto=format&fit=crop&w=400&q=80" 
+                                 alt="Fundaciones" class="w-100">
+                            <div class="card-overlay">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-icon">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <h4 class="card-title">Fundaciones</h4>
+                            <p class="card-description">
+                                Conoce y apoya a las fundaciones de mascotas en Panamá que trabajan 
+                                incansablemente por el bienestar animal.
+                            </p>
+                            <div class="card-features">
+                                <span class="feature-badge">Adopción</span>
+                                <span class="feature-badge">Rescate</span>
+                                <span class="feature-badge">Ayuda</span>
+                            </div>
+                            <a href="fundaciones-panama.html" class="explore-btn">
+                                <span>Ver Fundaciones</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="explore-card">
+                        <div class="card-image">
+                            <img src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=400&q=80" 
+                                 alt="Asistente Virtual" class="w-100">
+                            <div class="card-overlay">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <h4 class="card-title">Asistente Virtual</h4>
+                            <p class="card-description">
+                                Nuestro chatbot inteligente responde todas tus preguntas sobre 
+                                cuidado de mascotas las 24 horas del día.
+                            </p>
+                            <div class="card-features">
+                                <span class="feature-badge">IA</span>
+                                <span class="feature-badge">24/7</span>
+                                <span class="feature-badge">Ayuda</span>
+                            </div>
+                            <a href="chatbot-animales.html" class="explore-btn">
+                                <span>Chatear</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="explore-card">
+                        <div class="card-image">
+                            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=400&q=80" 
+                                 alt="Test ESP32" class="w-100">
+                            <div class="card-overlay">
+                                <i class="fas fa-vial"></i>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-icon">
+                                <i class="fas fa-vial"></i>
+                            </div>
+                            <h4 class="card-title">Test ESP32</h4>
+                            <p class="card-description">
+                                Prueba la conectividad y funcionalidad de nuestros dispositivos 
+                                ESP32 con herramientas de diagnóstico avanzadas.
+                            </p>
+                            <div class="card-features">
+                                <span class="feature-badge">Test</span>
+                                <span class="feature-badge">Diagnóstico</span>
+                                <span class="feature-badge">Conectividad</span>
+                            </div>
+                            <a href="test_esp32.html" class="explore-btn">
+                                <span>Probar</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
+                    <div class="explore-card">
+                        <div class="card-image">
+                            <img src="https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=400&q=80" 
+                                 alt="Comunidad" class="w-100">
+                            <div class="card-overlay">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h4 class="card-title">Comunidad</h4>
+                            <p class="card-description">
+                                Únete a nuestra comunidad de amantes de mascotas. Comparte experiencias, 
+                                consejos y conecta con otros dueños.
+                            </p>
+                            <div class="card-features">
+                                <span class="feature-badge">Social</span>
+                                <span class="feature-badge">Comunidad</span>
+                                <span class="feature-badge">Conecta</span>
+                            </div>
+                            <a href="#newsletter" class="explore-btn">
+                                <span>Unirse</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section Mejorado -->
+    <section id="newsletter" class="newsletter-section py-5">
+        <div class="container">
+            <div class="newsletter-container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6" data-aos="fade-right">
+                        <div class="newsletter-content">
+                            <h2 class="display-4 fw-bold mb-4">Únete a la Comunidad Petsear</h2>
+                            <p class="lead mb-4">
+                                Mantente informado sobre las últimas actualizaciones, novedades tecnológicas 
+                                y consejos exclusivos para el cuidado de tu mascota.
+                            </p>
+                            <div class="newsletter-features">
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle text-success"></i>
+                                    <span>Actualizaciones exclusivas</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle text-success"></i>
+                                    <span>Consejos veterinarios</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle text-success"></i>
+                                    <span>Ofertas especiales</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle text-success"></i>
+                                    <span>Eventos de la comunidad</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6" data-aos="fade-left">
+                        <div class="newsletter-form-container">
+                            <div class="newsletter-card">
+                                <h3 class="h4 fw-bold mb-3">Suscríbete Gratis</h3>
+                                <p class="text-muted mb-4">Recibe contenido exclusivo directamente en tu email</p>
+                                <form class="newsletter-form-modern">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-envelope"></i>
+                                        </span>
+                                        <input type="email" class="form-control" placeholder="Tu dirección de email" required>
+                                    </div>
+                                    <div class="input-group mb-4">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-user"></i>
+                                        </span>
+                                        <input type="text" class="form-control" placeholder="Tu nombre (opcional)">
+                                    </div>
+                                    <button type="submit" class="btn btn-gradient btn-lg w-100">
+                                        <i class="fas fa-paper-plane me-2"></i>
+                                        Suscribirse al Boletín
+                                    </button>
+                                </form>
+                                <div class="newsletter-footer mt-3">
+                                    <small class="text-muted">
+                                        <i class="fas fa-shield-alt me-1"></i>
+                                        Tu privacidad está protegida. No compartimos tu información.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Mejorado -->
+    <footer class="footer-modern py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="footer-brand">
+                        <div class="brand-info">
+                            <img src="imagenes/Logoremo.png" alt="Petsear Logo" class="footer-logo">
+                            <h3 class="fw-bold">Petsear</h3>
+                        </div>
+                        <p class="text-muted mt-3">
+                            Tecnología innovadora para el cuidado y bienestar de tus mascotas. 
+                            Conectamos amor y tecnología para crear un mundo mejor para los animales.
+                        </p>
+                        <div class="social-links-footer mt-4">
+                            <a href="#" class="social-link-footer" title="Facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="social-link-footer" title="Twitter">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="social-link-footer" title="Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="social-link-footer" title="LinkedIn">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="#" class="social-link-footer" title="YouTube">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6">
+                    <div class="footer-section">
+                        <h5 class="fw-bold mb-3">Productos</h5>
+                        <ul class="footer-links">
+                            <li><a href="arduino-prototype.html">Prototipo Arduino</a></li>
+                            <li><a href="esp32-camera.html">Cámara ESP32</a></li>
+                            <li><a href="test_esp32.html">Test ESP32</a></li>
+                            <li><a href="chatbot-animales.html">Asistente Virtual</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6">
+                    <div class="footer-section">
+                        <h5 class="fw-bold mb-3">Recursos</h5>
+                        <ul class="footer-links">
+                            <li><a href="#quienes-somos">Quiénes Somos</a></li>
+                            <li><a href="#componentes">Componentes</a></li>
+                            <li><a href="#faq">Preguntas Frecuentes</a></li>
+                            <li><a href="fundaciones-panama.html">Fundaciones</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6">
+                    <div class="footer-section">
+                        <h5 class="fw-bold mb-3">Soporte</h5>
+                        <ul class="footer-links">
+                            <li><a href="#contact">Contacto</a></li>
+                            <li><a href="#">Centro de Ayuda</a></li>
+                            <li><a href="#">Garantía</a></li>
+                            <li><a href="#">Soporte Técnico</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6">
+                    <div class="footer-section">
+                        <h5 class="fw-bold mb-3">Legal</h5>
+                        <ul class="footer-links">
+                            <li><a href="#">Términos de Servicio</a></li>
+                            <li><a href="#">Política de Privacidad</a></li>
+                            <li><a href="#">Cookies</a></li>
+                            <li><a href="#">Licencias</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <hr class="footer-divider">
+            
+            <div class="footer-bottom">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <p class="mb-0 text-muted">
+                            &copy; 2024 Petsear. Todos los derechos reservados. 
+                            <span class="d-none d-md-inline">|</span> 
+                            <span class="d-block d-md-inline">Hecho con ❤️ para las mascotas</span>
+                        </p>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <div class="footer-badges">
+                            <span class="badge bg-success me-2">
+                                <i class="fas fa-shield-alt me-1"></i>Seguro
+                            </span>
+                            <span class="badge bg-info me-2">
+                                <i class="fas fa-certificate me-1"></i>Certificado
+                            </span>
+                            <span class="badge bg-warning">
+                                <i class="fas fa-star me-1"></i>Premium
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top-modern" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Custom JavaScript -->
+    <script src="js/pagina-infor.js"></script>
+    <script>
+    // Navbar background on scroll
+    window.addEventListener('scroll', function() {
+      const navbar = document.querySelector('.navbar-blur');
+      if (window.scrollY > 60) {
+        navbar.style.background = 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)';
+        navbar.style.backdropFilter = 'blur(8px)';
+      } else {
+        navbar.style.background = 'transparent';
+        navbar.style.backdropFilter = 'blur(8px)';
+      }
+    });
+    </script>
+</body>
+</html>

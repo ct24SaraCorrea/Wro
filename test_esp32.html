@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test ESP32 - Petsear</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .test-section {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        .btn {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .btn:hover {
+            background: #45a049;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success { background: rgba(76, 175, 80, 0.3); }
+        .error { background: rgba(244, 67, 54, 0.3); }
+        .info { background: rgba(33, 150, 243, 0.3); }
+        .log {
+            background: rgba(0,0,0,0.3);
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 Test ESP32 - Petsear</h1>
+    
+    <div class="test-section">
+        <h2>Configuración</h2>
+        <label>IP del ESP32:</label>
+        <input type="text" id="esp32IP" value="192.168.0.5" style="padding: 5px; margin: 5px;">
+        <button class="btn" onclick="testConnection()">Probar Conexión</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Pruebas</h2>
+        <button class="btn" onclick="testStatus()">Test /status</button>
+        <button class="btn" onclick="testAbrir()">Test /abrir</button>
+        <button class="btn" onclick="testRoot()">Test / (página principal)</button>
+        <button class="btn" onclick="pingESP32()">Ping ESP32</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Resultados</h2>
+        <div id="results"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Log de Actividad</h2>
+        <div id="log" class="log"></div>
+        <button class="btn" onclick="clearLog()">Limpiar Log</button>
+    </div>
+
+    <script>
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.innerHTML = `[${timestamp}] ${message}`;
+            logEntry.className = type;
+            logDiv.appendChild(logEntry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+        }
+
+        function showResult(message, type = 'info') {
+            const resultsDiv = document.getElementById('results');
+            const resultDiv = document.createElement('div');
+            resultDiv.className = `status ${type}`;
+            resultDiv.innerHTML = message;
+            resultsDiv.appendChild(resultDiv);
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+
+        async function testConnection() {
+            clearResults();
+            const ip = document.getElementById('esp32IP').value;
+            log(`🔍 Probando conexión a ${ip}...`);
+            
+            try {
+                const response = await fetch(`http://${ip}/status`, {
+                    method: 'GET',
+                    timeout: 5000
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    log(`✅ Conexión exitosa a ${ip}`, 'success');
+                    showResult(`✅ ESP32 encontrado en ${ip}<br>Estado: ${JSON.stringify(data, null, 2)}`, 'success');
+                } else {
+                    log(`❌ Error HTTP: ${response.status}`, 'error');
+                    showResult(`❌ Error HTTP: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ Error de conexión: ${error.message}`, 'error');
+                showResult(`❌ Error de conexión: ${error.message}`, 'error');
+            }
+        }
+
+        async function testStatus() {
+            const ip = document.getElementById('esp32IP').value;
+            log(`📊 Probando endpoint /status en ${ip}...`);
+            
+            try {
+                const response = await fetch(`http://${ip}/status`, {
+                    method: 'GET',
+                    timeout: 5000
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    log(`✅ /status responde correctamente`, 'success');
+                    showResult(`✅ /status OK<br>Datos: ${JSON.stringify(data, null, 2)}`, 'success');
+                } else {
+                    log(`❌ /status error: ${response.status}`, 'error');
+                    showResult(`❌ /status error: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ /status error: ${error.message}`, 'error');
+                showResult(`❌ /status error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testAbrir() {
+            const ip = document.getElementById('esp32IP').value;
+            log(`🚪 Probando endpoint /abrir en ${ip}...`);
+            
+            try {
+                const response = await fetch(`http://${ip}/abrir`, {
+                    method: 'GET',
+                    timeout: 10000
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    log(`✅ /abrir responde correctamente`, 'success');
+                    showResult(`✅ /abrir OK<br>Respuesta: ${JSON.stringify(data, null, 2)}`, 'success');
+                } else {
+                    log(`❌ /abrir error: ${response.status}`, 'error');
+                    showResult(`❌ /abrir error: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ /abrir error: ${error.message}`, 'error');
+                showResult(`❌ /abrir error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testRoot() {
+            const ip = document.getElementById('esp32IP').value;
+            log(`🏠 Probando página principal en ${ip}...`);
+            
+            try {
+                const response = await fetch(`http://${ip}/`, {
+                    method: 'GET',
+                    timeout: 5000
+                });
+                
+                if (response.ok) {
+                    const html = await response.text();
+                    log(`✅ Página principal responde correctamente`, 'success');
+                    showResult(`✅ Página principal OK<br>Longitud HTML: ${html.length} caracteres`, 'success');
+                } else {
+                    log(`❌ Página principal error: ${response.status}`, 'error');
+                    showResult(`❌ Página principal error: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ Página principal error: ${error.message}`, 'error');
+                showResult(`❌ Página principal error: ${error.message}`, 'error');
+            }
+        }
+
+        async function pingESP32() {
+            const ip = document.getElementById('esp32IP').value;
+            log(`🏓 Haciendo ping a ${ip}...`);
+            
+            // Simular ping con fetch
+            try {
+                const startTime = Date.now();
+                const response = await fetch(`http://${ip}/status`, {
+                    method: 'GET',
+                    timeout: 3000
+                });
+                const endTime = Date.now();
+                const latency = endTime - startTime;
+                
+                if (response.ok) {
+                    log(`✅ Ping exitoso - Latencia: ${latency}ms`, 'success');
+                    showResult(`✅ Ping exitoso<br>Latencia: ${latency}ms`, 'success');
+                } else {
+                    log(`⚠️ Ping con error HTTP: ${response.status}`, 'error');
+                    showResult(`⚠️ Ping con error HTTP: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ Ping fallido: ${error.message}`, 'error');
+                showResult(`❌ Ping fallido: ${error.message}`, 'error');
+            }
+        }
+
+        // Auto-test al cargar la página
+        window.onload = function() {
+            log('🚀 Página de test cargada');
+            log('💡 Haz clic en "Probar Conexión" para comenzar');
+        };
+    </script>
+</body>
+</html> 
