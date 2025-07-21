@@ -31,6 +31,8 @@ document.addEventListener('DOMContentLoaded', function() {
 async function findESP32() {
     // Intentar con IPs comunes del ESP32, incluyendo la IP específica del usuario
     const commonIPs = [
+        '192.168.110.26',      // IP de tu ESP32
+        '10.17.194.207',    // IP anterior
         '192.168.0.5',      // IP específica del usuario
         '192.168.0.100',
         '192.168.0.101', 
@@ -426,3 +428,87 @@ window.updateSimulation = updateSimulation;
 window.abrirCompuerta = abrirCompuerta;
 window.abrirServo = abrirServo;
 window.showNotification = showNotification; 
+
+// --- GRAFICO DE BPM ---
+let bpmData = [];
+let bpmChart = null;
+
+function initBPMChart() {
+  const ctx = document.getElementById('bpmChart').getContext('2d');
+  bpmChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: [],
+      datasets: [{
+        label: 'BPM',
+        data: [],
+        borderColor: '#764ba2',
+        backgroundColor: 'rgba(118,75,162,0.1)',
+        tension: 0.3
+      }]
+    },
+    options: {
+      scales: {
+        x: { display: false },
+        y: { min: 40, max: 200 }
+      }
+    }
+  });
+}
+
+async function fetchBPM() {
+  if (!esp32IP || !connectionStatus) return;
+  try {
+    const response = await fetch(`http://${esp32IP}/bpm`);
+    if (response.ok) {
+      const data = await response.json();
+      const bpm = data.bpm;
+      // Actualiza el valor en la UI
+      document.getElementById('heartRate').textContent = bpm;
+
+      // Actualiza el gráfico
+      const now = new Date().toLocaleTimeString();
+      bpmData.push({ time: now, bpm: bpm });
+      if (bpmData.length > 30) bpmData.shift(); // Solo los últimos 30 puntos
+
+      bpmChart.data.labels = bpmData.map(d => d.time);
+      bpmChart.data.datasets[0].data = bpmData.map(d => d.bpm);
+      bpmChart.update();
+
+      // Alerta si BPM fuera de rango
+      if (bpm < 60 || bpm > 160) {
+        document.getElementById('lastAlert').textContent = `BPM fuera de rango: ${bpm}`;
+      }
+    }
+  } catch (e) {
+    // No actualiza si hay error
+  }
+}
+
+// Inicializa el gráfico y consulta BPM real cada 2 segundos
+document.addEventListener('DOMContentLoaded', () => {
+  if (document.getElementById('bpmChart')) {
+    initBPMChart();
+    setInterval(fetchBPM, 2000);
+  }
+});
+
+function actualizarTemperatura() {
+    // Cambia la IP por la de tu ESP32
+    fetch('http://192.168.110.26/temperatura')
+        .then(response => response.json())
+        .then(data => {
+            if (data.temperatura !== null) {
+                document.getElementById('temperature').textContent = data.temperatura + ' °C';
+            } else {
+                document.getElementById('temperature').textContent = '--';
+            }
+        })
+        .catch(() => {
+            document.getElementById('temperature').textContent = '--';
+        });
+}
+
+// Actualiza cada 5 segundos
+setInterval(actualizarTemperatura, 5000);
+actualizarTemperatura();

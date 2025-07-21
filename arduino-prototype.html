@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="css/estilodepaginaarduino.css">
+    <link rel="stylesheet" href="css/estilodepaginaarduino.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <!-- Navbar -->
@@ -59,7 +61,7 @@
             <!-- Circuit Diagram -->
             <div class="circuit-diagram" data-aos="fade-up">
                 <h2 class="mb-4">Diagrama del Circuito</h2>
-                <img src="imagenes/circuit-diagram.jpg" alt="Diagrama del Circuito" class="img-fluid rounded">
+                <img src="imagenes/esp32.jpg" alt="Diagrama del Circuito" class="img-fluid rounded">
             </div>
 
             <!-- Component List -->
@@ -108,45 +110,43 @@
                 <button class="copy-button" onclick="copyCode()">
                     <i class="fas fa-copy"></i> Copiar Código
                 </button>
-                <pre><code>#include <Wire.h>
-#include <Adafruit_GPS.h>
-#include <SoftwareSerial.h>
+                <pre><code>#include <PulseSensorPlayground.h>  // Biblioteca del sensor de pulso
 
-// Configuración del GPS
-SoftwareSerial mySerial(3, 2);
-Adafruit_GPS GPS(&mySerial);
-
-// Configuración del sensor de ritmo cardíaco
-const int heartRatePin = A0;
-
-void setup() {
-    Serial.begin(9600);
-    GPS.begin(9600);
-    GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
-    GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ);
-}
-
-void loop() {
-    // Leer datos del GPS
-    GPS.read();
-    if (GPS.newNMEAreceived()) {
-        if (!GPS.parse(GPS.lastNMEA()))
-            return;
-    }
-
-    // Leer ritmo cardíaco
-    int heartRate = analogRead(heartRatePin);
-    
-    // Enviar datos
-    Serial.print("HR:");
-    Serial.print(heartRate);
-    Serial.print(",LAT:");
-    Serial.print(GPS.latitude, 4);
-    Serial.print(",LON:");
-    Serial.println(GPS.longitude, 4);
-    
-    delay(1000);
-}</code></pre>
+                    // CONFIGURACIÓN PARA ESP32
+                    const int PulseWire = 34;  // Pin analógico del ESP32 (puede ser 34, 35, 32, 33, etc.)
+                    const int LED = 15;         // GPIO15 es donde suele estar el LED integrado en el ESP32
+                    int Threshold = 550;       // Umbral para detectar latidos
+                    
+                    PulseSensorPlayground pulseSensor;
+                    
+                    void setup() {
+                      Serial.begin(115200);
+                    
+                      // Configurar el LED como salida por si se quiere usar manualmente
+                      pinMode(LED, OUTPUT);
+                    
+                      // Configurar el sensor de pulso
+                      pulseSensor.analogInput(PulseWire);
+                      pulseSensor.blinkOnPulse(LED);       // Parpadea el LED con cada latido detectado
+                      pulseSensor.setThreshold(Threshold);
+                    
+                      if (pulseSensor.begin()) {
+                        Serial.println("¡Sensor de pulso inicializado correctamente!");
+                      } else {
+                        Serial.println("Error al iniciar el sensor de pulso.");
+                      }
+                    }
+                    
+                    void loop() {
+                      if (pulseSensor.sawStartOfBeat()) {
+                        int myBPM = pulseSensor.getBeatsPerMinute();
+                        Serial.println("♥ ¡Tu corazón está latiendo!");
+                        Serial.print("BPM: ");
+                        Serial.println(myBPM);
+                      }
+                    
+                      delay(20);
+                    }</code></pre>
             </div>
 
             <!-- Real-time Simulation -->
@@ -172,10 +172,17 @@ void loop() {
                     <div class="col-md-4 text-center">
                         <div class="sensor-value" id="heartRate">--</div>
                         <div class="sensor-label">Ritmo Cardíaco (BPM)</div>
+                        <!-- Gráfico de BPM -->
+                        <div class="mt-3">
+                            <canvas id="bpmChart" width="300" height="100"></canvas>
+                        </div>
                     </div>
                     <div class="col-md-4 text-center">
                         <div class="sensor-value" id="location">--</div>
                         <div class="sensor-label">Ubicación</div>
+                        <div class="sensor-value mt-3" id="temperature">--</div>
+                        <div class="sensor-label">Temperatura (&deg;C)</div>
+                        <!-- <i class="fas fa-thermometer-half fa-2x text-danger"></i> -->
                     </div>
                     <div class="col-md-4 text-center">
                         <div class="sensor-value" id="battery">--</div>
@@ -217,6 +224,7 @@ void loop() {
                                     <div class="col-md-6">
                                         <p><strong>Última actividad:</strong> <span id="lastActivity">--</span></p>
                                         <p><strong>Distancia del sensor:</strong> <span id="sensorDistance">--</span></p>
+                                        <p><strong>Última alerta:</strong> <span id="lastAlert">Ninguna</span></p>
                                     </div>
                                 </div>
                             </div>
