@@ -204,8 +204,8 @@
                         <a class="nav-link" href="Pagina con infor.html#componentes">Componentes</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="arduino-prototype.html">
-                            <i class="fas fa-microchip me-1"></i>Arduino
+                        <a class="nav-link" href="sensores-tiempo-real.html">
+                            <i class="fas fa-microchip me-1"></i>Sensores
                         </a>
                     </li>
                     <li class="nav-item">
@@ -339,54 +339,77 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer-modern py-5" style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); color: #fff;">
-        <div class="container">
-            <div class="row g-4 align-items-center">
-                <div class="col-lg-4 col-md-6 text-center text-lg-start mb-4 mb-lg-0">
-                    <div class="footer-brand d-flex align-items-center justify-content-center justify-content-lg-start gap-3">
-                        <img src="imagenes/Logoremo.png" alt="Petsear Logo" class="footer-logo" style="height: 48px; width: 48px; border-radius: 12px; background: #fff; padding: 2px; box-shadow: 0 2px 8px rgba(0,0,0,0.12);">
-                        <h3 class="fw-bold mb-0">Petsear</h3>
-                    </div>
-                    <p class="text-light mt-3 mb-0">
-                        Monitoreo inteligente y tecnología innovadora para el bienestar de tus mascotas.
-                    </p>
-                </div>
-                <div class="col-lg-4 col-md-6 text-center mb-4 mb-lg-0">
-                    <div class="footer-section">
-                        <h5 class="fw-bold mb-3">Navegación</h5>
-                        <ul class="footer-links list-unstyled mb-0">
-                            <li><a href="Pagina con infor.html" class="text-light">Inicio</a></li>
-                            <li><a href="Pagina con infor.html#quienes-somos" class="text-light">Quiénes Somos</a></li>
-                            <li><a href="Pagina con infor.html#componentes" class="text-light">Componentes</a></li>
-                            <li><a href="arduino-prototype.html" class="text-light">Arduino</a></li>
-                            <li><a href="fundaciones-panama.html" class="text-light">Fundaciones</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-12 text-center text-lg-end">
-                    <div class="social-links-footer d-flex justify-content-center justify-content-lg-end gap-3 mb-3" data-aos="fade-left">
-                        <a href="#" class="social-link-footer" title="Facebook"><i class="fab fa-facebook-f fa-lg"></i></a>
-                        <a href="#" class="social-link-footer" title="Twitter"><i class="fab fa-twitter fa-lg"></i></a>
-                        <a href="#" class="social-link-footer" title="Instagram"><i class="fab fa-instagram fa-lg"></i></a>
-                        <a href="#" class="social-link-footer" title="LinkedIn"><i class="fab fa-linkedin-in fa-lg"></i></a>
-                        <a href="#" class="social-link-footer" title="YouTube"><i class="fab fa-youtube fa-lg"></i></a>
-                    </div>
-                    <div class="footer-badges d-flex justify-content-center justify-content-lg-end gap-2">
-                        <span class="badge bg-success"><i class="fas fa-shield-alt me-1"></i>Seguro</span>
-                        <span class="badge bg-info"><i class="fas fa-certificate me-1"></i>Certificado</span>
-                        <span class="badge bg-warning"><i class="fas fa-star me-1"></i>Premium</span>
-                    </div>
-                </div>
+    <section class="firebase-demo-section" style="margin: 40px 0; padding: 32px; background: #f8f9fa; border-radius: 16px; box-shadow: 0 4px 16px rgba(102,126,234,0.08);">
+        <h2 style="color: #667eea; text-align:center; margin-bottom: 24px;">🔥 Demo Firebase en ESP32 Cámara</h2>
+        <div style="display: flex; flex-wrap: wrap; gap: 24px; justify-content: center; align-items: flex-start;">
+            <div style="flex:1; min-width: 260px; max-width: 350px;">
+                <label for="nombreCam" style="font-weight: 500;">Tu nombre:</label>
+                <input id="nombreCam" type="text" class="form-control mb-2" placeholder="Escribe tu nombre o apodo">
+                <button id="guardarDatoCam" class="btn btn-primary w-100 mb-2" style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); border: none;">Guardar Dato en Firebase</button>
+                <div id="estadoFirebaseCam" class="alert alert-info" style="margin-top: 8px;">Conectando a Firebase...</div>
             </div>
-            <hr class="footer-divider my-4" style="border-color: rgba(255,255,255,0.2);">
-            <div class="footer-bottom text-center">
-                <p class="mb-0 text-light">&copy; 2024 Petsear. Todos los derechos reservados. | Hecho con <span style="color: #ffb6b6;">❤️</span> para las mascotas</p>
+            <div style="flex:2; min-width: 260px;">
+                <h5>🕑 Historial de Acciones Recientes</h5>
+                <ul id="historialCam" class="list-group" style="max-height: 220px; overflow-y: auto; background: #fff; border-radius: 8px;"></ul>
             </div>
         </div>
-    </footer>
-    <button class="back-to-top-modern" id="backToTop" style="position: fixed; bottom: 32px; right: 32px; z-index: 999; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; border: none; border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(102,126,234,0.2); font-size: 1.5rem; cursor: pointer; display: none;"><i class="fas fa-arrow-up"></i></button>
+    </section>
+    <!-- Firebase Configuration -->
+    <script type="module" src="js/firebase-config.js"></script>
+    <script>
+    // Estado de usuario
+    function actualizarEstadoFirebaseCam() {
+        const estado = document.getElementById('estadoFirebaseCam');
+        if (window.isUserAuthenticated && window.isUserAuthenticated()) {
+            const user = window.getCurrentUser();
+            estado.className = 'alert alert-success';
+            estado.innerHTML = `<b>✅ Usuario autenticado</b><br>ID: <code>${user.uid}</code>`;
+        } else {
+            estado.className = 'alert alert-danger';
+            estado.innerHTML = '<b>❌ No autenticado</b>';
+        }
+    }
+    window.addEventListener('firebaseAuthReady', actualizarEstadoFirebaseCam);
+    setTimeout(actualizarEstadoFirebaseCam, 2000);
 
+    // Guardar dato
+    document.getElementById('guardarDatoCam').onclick = async function() {
+        const nombre = document.getElementById('nombreCam').value.trim() || 'Anónimo';
+        const estado = document.getElementById('estadoFirebaseCam');
+        if (!window.isUserAuthenticated || !window.isUserAuthenticated()) {
+            estado.className = 'alert alert-danger';
+            estado.innerHTML = '❌ No autenticado con Firebase.';
+            return;
+        }
+        try {
+            await window.saveUserData({
+                nombre,
+                pagina: 'esp32-camera',
+                fecha: new Date().toLocaleString()
+            }, 'esp32cam_historial');
+            estado.className = 'alert alert-success';
+            estado.innerHTML = '✅ Dato guardado exitosamente en Firebase.';
+        } catch (e) {
+            estado.className = 'alert alert-danger';
+            estado.innerHTML = '❌ Error al guardar: ' + e.message;
+        }
+    };
+
+    // Mostrar historial
+    window.loadChatHistory && window.loadChatHistory('esp32cam_historial', 10);
+    window.addEventListener('chatHistoryLoaded', function(e) {
+        if (e.detail.collectionName !== 'esp32cam_historial') return;
+        const historial = document.getElementById('historialCam');
+        historial.innerHTML = '';
+        e.detail.messages.forEach(msg => {
+            const li = document.createElement('li');
+            li.className = 'list-group-item d-flex align-items-center';
+            li.innerHTML = `<i class='fas fa-user-circle me-2' style='color:#667eea;'></i> <b>${msg.nombre}</b> <span class='ms-auto text-muted' style='font-size:0.9em;'>${msg.fecha}</span>`;
+            historial.appendChild(li);
+        });
+    });
+    </script>
+    <script src="js/notificaciones.js"></script>
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>

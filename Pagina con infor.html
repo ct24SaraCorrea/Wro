@@ -43,8 +43,8 @@
                         <a class="nav-link" href="#componentes">Componentes</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="arduino-prototype.html">
-                            <i class="fas fa-microchip me-1"></i>Arduino
+                        <a class="nav-link" href="sensores-tiempo-real.html">
+                            <i class="fas fa-microchip me-1"></i>Sensores
                         </a>
                     </li>
                     <li class="nav-item">
@@ -671,8 +671,6 @@
                                 <div class="accordion-body">
                                     <p>Nuestra aplicación Petsear está disponible para:</p>
                                     <ul>
-                                        <li><strong>iOS:</strong> iPhone y iPad (iOS 12+)</li>
-                                        <li><strong>Android:</strong> Todos los dispositivos (Android 8+)</li>
                                         <li><strong>Web:</strong> Acceso desde cualquier navegador</li>
                                     </ul>
                                     <p>La app incluye: monitoreo en tiempo real, historial de actividad, alertas personalizables, y chat con veterinarios.</p>
@@ -858,65 +856,7 @@
                     </div>
                 </div>
 
-                <!-- Formulario de Contacto -->
-                <div class="col-lg-7" data-aos="fade-left">
-                    <div class="contact-form-modern">
-                        <h3 class="h2 fw-bold mb-4">Envíanos un mensaje</h3>
-                        <form id="contactForm" class="contact-form">
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control" id="nombre" placeholder="Nombre" required>
-                                        <label for="nombre">Nombre completo</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="email" class="form-control" id="email" placeholder="Email" required>
-                                        <label for="email">Correo electrónico</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="tel" class="form-control" id="telefono" placeholder="Teléfono">
-                                        <label for="telefono">Teléfono (opcional)</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <select class="form-select" id="tipoMascota">
-                                            <option value="">Selecciona...</option>
-                                            <option value="perro">Perro</option>
-                                            <option value="gato">Gato</option>
-                                            <option value="otro">Otra mascota</option>
-                                        </select>
-                                        <label for="tipoMascota">Tipo de mascota</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control" id="asunto" placeholder="Asunto" required>
-                                        <label for="asunto">Asunto</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-floating">
-                                        <textarea class="form-control" id="mensaje" rows="5" placeholder="Mensaje" required></textarea>
-                                        <label for="mensaje">Tu mensaje</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <button type="submit" class="btn btn-gradient btn-lg w-100">
-                                        <i class="fas fa-paper-plane me-2"></i>
-                                        Enviar Mensaje
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
+        
             <!-- Mapa -->
             <div class="row mt-5">
                 <div class="col-12" data-aos="fade-up">
@@ -1089,8 +1029,8 @@
                                 <span class="feature-badge">Sensores</span>
                                 <span class="feature-badge">IoT</span>
                             </div>
-                            <a href="arduino-prototype.html" class="explore-btn">
-                                <span>Explorar Arduino</span>
+                            <a href="sensores-tiempo-real.html" class="explore-btn">
+                                <span>Explorar Sensores</span>
                                 <i class="fas fa-arrow-right"></i>
                             </a>
                         </div>
@@ -1254,76 +1194,86 @@
             </div>
         </div>
     </section>
-
-    <!-- Newsletter Section Mejorado -->
-    <section id="newsletter" class="newsletter-section py-5">
+    <section class="inscripcion-section py-5" style="background: #f8f9fa; border-radius: 16px; margin: 40px 0; box-shadow: 0 4px 16px rgba(102,126,234,0.08);">
         <div class="container">
-            <div class="newsletter-container">
-                <div class="row align-items-center">
-                    <div class="col-lg-6" data-aos="fade-right">
-                        <div class="newsletter-content">
-                            <h2 class="display-4 fw-bold mb-4">Únete a la Comunidad Petsear</h2>
-                            <p class="lead mb-4">
-                                Mantente informado sobre las últimas actualizaciones, novedades tecnológicas 
-                                y consejos exclusivos para el cuidado de tu mascota.
-                            </p>
-                            <div class="newsletter-features">
-                                <div class="feature-item">
-                                    <i class="fas fa-check-circle text-success"></i>
-                                    <span>Actualizaciones exclusivas</span>
-                                </div>
-                                <div class="feature-item">
-                                    <i class="fas fa-check-circle text-success"></i>
-                                    <span>Consejos veterinarios</span>
-                                </div>
-                                <div class="feature-item">
-                                    <i class="fas fa-check-circle text-success"></i>
-                                    <span>Ofertas especiales</span>
-                                </div>
-                                <div class="feature-item">
-                                    <i class="fas fa-check-circle text-success"></i>
-                                    <span>Eventos de la comunidad</span>
-                                </div>
-                            </div>
+            <h2 class="text-center mb-4" style="color: #667eea;">📝 ¡Inscríbete a la Comunidad Petsear!</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <form id="formInscripcion" class="p-4 rounded bg-white shadow-sm">
+                        <div class="mb-3">
+                            <label for="nombreInscripcion" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="nombreInscripcion" placeholder="Tu nombre" required>
                         </div>
-                    </div>
-                    <div class="col-lg-6" data-aos="fade-left">
-                        <div class="newsletter-form-container">
-                            <div class="newsletter-card">
-                                <h3 class="h4 fw-bold mb-3">Suscríbete Gratis</h3>
-                                <p class="text-muted mb-4">Recibe contenido exclusivo directamente en tu email</p>
-                                <form class="newsletter-form-modern">
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text">
-                                            <i class="fas fa-envelope"></i>
-                                        </span>
-                                        <input type="email" class="form-control" placeholder="Tu dirección de email" required>
-                                    </div>
-                                    <div class="input-group mb-4">
-                                        <span class="input-group-text">
-                                            <i class="fas fa-user"></i>
-                                        </span>
-                                        <input type="text" class="form-control" placeholder="Tu nombre (opcional)">
-                                    </div>
-                                    <button type="submit" class="btn btn-gradient btn-lg w-100">
-                                        <i class="fas fa-paper-plane me-2"></i>
-                                        Suscribirse al Boletín
-                                    </button>
-                                </form>
-                                <div class="newsletter-footer mt-3">
-                                    <small class="text-muted">
-                                        <i class="fas fa-shield-alt me-1"></i>
-                                        Tu privacidad está protegida. No compartimos tu información.
-                                    </small>
-                                </div>
-                            </div>
+                        <div class="mb-3">
+                            <label for="emailInscripcion" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="emailInscripcion" placeholder="tucorreo@email.com" required>
                         </div>
-                    </div>
+                        <div class="mb-3">
+                            <label for="telefonoInscripcion" class="form-label">Teléfono</label>
+                            <input type="tel" class="form-control" id="telefonoInscripcion" placeholder="Tu teléfono">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100" style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); border: none;">Inscribirme</button>
+                        <div id="estadoInscripcion" class="alert alert-info mt-3" style="display:none;"></div>
+                    </form>
+                </div>
+                <div class="col-md-6 mt-4 mt-md-0">
+                    <h5 class="mb-3">👥 Últimas Inscripciones</h5>
+                    <ul id="historialInscripcion" class="list-group" style="max-height: 260px; overflow-y: auto; background: #fff; border-radius: 8px;"></ul>
                 </div>
             </div>
         </div>
     </section>
-
+    <!-- Firebase Configuration -->
+    <script type="module" src="js/firebase-config.js"></script>
+    <script>
+    // Estado de inscripción
+    function mostrarEstadoInscripcion(msg, tipo) {
+        const estado = document.getElementById('estadoInscripcion');
+        estado.style.display = 'block';
+        estado.className = 'alert alert-' + (tipo || 'info') + ' mt-3';
+        estado.innerHTML = msg;
+    }
+    // Guardar inscripción
+    if (document.getElementById('formInscripcion')) {
+        document.getElementById('formInscripcion').onsubmit = async function(e) {
+            e.preventDefault();
+            const nombre = document.getElementById('nombreInscripcion').value.trim();
+            const email = document.getElementById('emailInscripcion').value.trim();
+            const telefono = document.getElementById('telefonoInscripcion').value.trim();
+            if (!window.isUserAuthenticated || !window.isUserAuthenticated()) {
+                mostrarEstadoInscripcion('❌ No autenticado con Firebase.', 'danger');
+                return;
+            }
+            try {
+                await window.saveUserData({
+                    nombre,
+                    email,
+                    telefono,
+                    fecha: new Date().toLocaleString(),
+                    pagina: 'inscripcion'
+                }, 'inscripciones');
+                mostrarEstadoInscripcion('✅ ¡Inscripción exitosa! Pronto recibirás novedades.', 'success');
+                document.getElementById('formInscripcion').reset();
+            } catch (e) {
+                mostrarEstadoInscripcion('❌ Error al inscribirse: ' + e.message, 'danger');
+            }
+        };
+    }
+    // Mostrar historial de inscripciones
+    window.loadChatHistory && window.loadChatHistory('inscripciones', 10);
+    window.addEventListener('chatHistoryLoaded', function(e) {
+        if (e.detail.collectionName !== 'inscripciones') return;
+        const historial = document.getElementById('historialInscripcion');
+        if (!historial) return;
+        historial.innerHTML = '';
+        e.detail.messages.forEach(msg => {
+            const li = document.createElement('li');
+            li.className = 'list-group-item d-flex align-items-center';
+            li.innerHTML = `<i class='fas fa-user me-2' style='color:#764ba2;'></i> <b>${msg.nombre}</b> <span class='ms-auto text-muted' style='font-size:0.9em;'>${msg.fecha}</span>`;
+            historial.appendChild(li);
+        });
+    });
+    </script>
     <!-- Footer Mejorado -->
     <footer class="footer-modern py-5">
         <div class="container">
@@ -1362,7 +1312,7 @@
                     <div class="footer-section">
                         <h5 class="fw-bold mb-3">Productos</h5>
                         <ul class="footer-links">
-                            <li><a href="arduino-prototype.html">Prototipo Arduino</a></li>
+                            <li><a href="sensores-tiempo-real.html">Sensores</a></li>
                             <li><a href="esp32-camera.html">Cámara ESP32</a></li>
                             <li><a href="test_esp32.html">Test ESP32</a></li>
                             <li><a href="chatbot-animales.html">Asistente Virtual</a></li>
@@ -1456,5 +1406,8 @@
       }
     });
     </script>
+    <!-- Formulario de Inscripción con Firebase -->
+    <script src="js/notificaciones.js"></script>
+    <script src="js/modo-oscuro.js"></script>
 </body>
 </html>

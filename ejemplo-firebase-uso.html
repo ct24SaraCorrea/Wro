@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo de Uso de Firebase - Petsear</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .demo-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+        }
+        .demo-section h3 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #5a6fd8;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            background: #f0f0f0;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        #userStatus, #messageLog {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            min-height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐾 Ejemplo de Uso de Firebase en Petsear</h1>
+        
+        <div class="demo-section">
+            <h3>1. Estado de Autenticación</h3>
+            <button onclick="checkAuthStatus()">Verificar Estado de Usuario</button>
+            <div id="userStatus" class="status info">Esperando verificación...</div>
+        </div>
+
+        <div class="demo-section">
+            <h3>2. Guardar Datos de Usuario</h3>
+            <button onclick="saveUserData()">Guardar Datos de Ejemplo</button>
+            <div id="saveStatus" class="status info">Haz clic para guardar datos de ejemplo</div>
+        </div>
+
+        <div class="demo-section">
+            <h3>3. Tracking de Analytics</h3>
+            <button onclick="trackPageView()">Registrar Vista de Página</button>
+            <button onclick="trackCustomEvent()">Registrar Evento Personalizado</button>
+            <div id="analyticsStatus" class="status info">Haz clic para registrar eventos</div>
+        </div>
+
+        <div class="demo-section">
+            <h3>4. Mensajes del Sistema</h3>
+            <div id="messageLog" class="status info">Esperando mensajes...</div>
+        </div>
+
+        <div class="demo-section">
+            <h3>5. Funciones Disponibles</h3>
+            <p><strong>Funciones globales disponibles:</strong></p>
+            <ul>
+                <li><code>window.getCurrentUser()</code> - Obtener usuario actual</li>
+                <li><code>window.isUserAuthenticated()</code> - Verificar si está autenticado</li>
+                <li><code>window.saveUserData(data, collection)</code> - Guardar datos de usuario</li>
+                <li><code>window.trackEvent(eventName, parameters)</code> - Registrar eventos de analytics</li>
+                <li><code>window.saveMessageToFirebase(text, sender, collection)</code> - Guardar mensajes</li>
+                <li><code>window.loadChatHistory(collection, limit)</code> - Cargar historial de chat</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Firebase Configuration -->
+    <script type="module" src="js/firebase-config.js"></script>
+
+    <script>
+        // Función para verificar estado de autenticación
+        function checkAuthStatus() {
+            const userStatus = document.getElementById('userStatus');
+            
+            if (window.isUserAuthenticated && window.isUserAuthenticated()) {
+                const user = window.getCurrentUser();
+                userStatus.innerHTML = `
+                    <strong>✅ Usuario Autenticado</strong><br>
+                    ID: ${user.uid}<br>
+                    Email: ${user.email || 'Anónimo'}<br>
+                    Tiempo de conexión: ${new Date(user.metadata.lastSignInTime).toLocaleString()}
+                `;
+                userStatus.className = 'status success';
+            } else {
+                userStatus.innerHTML = '<strong>❌ Usuario No Autenticado</strong>';
+                userStatus.className = 'status error';
+            }
+        }
+
+        // Función para guardar datos de usuario
+        async function saveUserData() {
+            const saveStatus = document.getElementById('saveStatus');
+            
+            try {
+                const userData = {
+                    page: 'ejemplo-firebase-uso.html',
+                    action: 'demo_data_save',
+                    timestamp: new Date().toISOString(),
+                    userAgent: navigator.userAgent,
+                    screenSize: `${screen.width}x${screen.height}`
+                };
+
+                if (window.saveUserData) {
+                    await window.saveUserData(userData, 'demo_data');
+                    saveStatus.innerHTML = '<strong>✅ Datos guardados exitosamente en Firestore</strong>';
+                    saveStatus.className = 'status success';
+                } else {
+                    throw new Error('Función saveUserData no disponible');
+                }
+            } catch (error) {
+                saveStatus.innerHTML = `<strong>❌ Error al guardar datos:</strong> ${error.message}`;
+                saveStatus.className = 'status error';
+            }
+        }
+
+        // Función para registrar vista de página
+        function trackPageView() {
+            const analyticsStatus = document.getElementById('analyticsStatus');
+            
+            try {
+                if (window.trackEvent) {
+                    window.trackEvent('page_view', {
+                        page_title: 'Ejemplo Firebase Uso',
+                        page_location: window.location.href
+                    });
+                    analyticsStatus.innerHTML = '<strong>✅ Vista de página registrada en Analytics</strong>';
+                    analyticsStatus.className = 'status success';
+                } else {
+                    throw new Error('Función trackEvent no disponible');
+                }
+            } catch (error) {
+                analyticsStatus.innerHTML = `<strong>❌ Error al registrar evento:</strong> ${error.message}`;
+                analyticsStatus.className = 'status error';
+            }
+        }
+
+        // Función para registrar evento personalizado
+        function trackCustomEvent() {
+            const analyticsStatus = document.getElementById('analyticsStatus');
+            
+            try {
+                if (window.trackEvent) {
+                    window.trackEvent('demo_button_click', {
+                        button_name: 'custom_event',
+                        timestamp: new Date().toISOString()
+                    });
+                    analyticsStatus.innerHTML = '<strong>✅ Evento personalizado registrado en Analytics</strong>';
+                    analyticsStatus.className = 'status success';
+                } else {
+                    throw new Error('Función trackEvent no disponible');
+                }
+            } catch (error) {
+                analyticsStatus.innerHTML = `<strong>❌ Error al registrar evento:</strong> ${error.message}`;
+                analyticsStatus.className = 'status error';
+            }
+        }
+
+        // Escuchar eventos de Firebase
+        window.addEventListener('firebaseAuthReady', function(event) {
+            const messageLog = document.getElementById('messageLog');
+            messageLog.innerHTML = '<strong>🔥 Firebase inicializado y usuario autenticado</strong>';
+            messageLog.className = 'status success';
+            
+            // Verificar estado automáticamente
+            setTimeout(checkAuthStatus, 1000);
+        });
+
+        // Mostrar mensaje cuando la página carga
+        document.addEventListener('DOMContentLoaded', function() {
+            const messageLog = document.getElementById('messageLog');
+            messageLog.innerHTML = '<strong>📱 Página cargada, esperando Firebase...</strong>';
+            messageLog.className = 'status info';
+        });
+
+        // Verificar si Firebase está disponible después de un tiempo
+        setTimeout(() => {
+            if (!window.isUserAuthenticated || !window.isUserAuthenticated()) {
+                const messageLog = document.getElementById('messageLog');
+                messageLog.innerHTML = '<strong>⚠️ Firebase no está disponible o no se ha inicializado</strong>';
+                messageLog.className = 'status error';
+            }
+        }, 3000);
+    </script>
+</body>
+</html> 

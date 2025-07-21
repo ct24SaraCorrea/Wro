@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 Monitoreo de Sensores en Tiempo Real - Petsear</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/estilodepaginainfor.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .sensors-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem 0;
+            margin-top: 76px;
+        }
+        .sensor-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin: 1rem 0;
+            transition: all 0.3s ease;
+            border-left: 5px solid #667eea;
+        }
+        .sensor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+        .sensor-card.warning {
+            border-left-color: #ffc107;
+            background: rgba(255, 193, 7, 0.1);
+        }
+        .sensor-card.danger {
+            border-left-color: #dc3545;
+            background: rgba(220, 53, 69, 0.1);
+        }
+        .sensor-card.success {
+            border-left-color: #28a745;
+            background: rgba(40, 167, 69, 0.1);
+        }
+        .sensor-value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #667eea;
+            margin: 1rem 0;
+        }
+        .sensor-unit {
+            font-size: 1.2rem;
+            color: #6c757d;
+            margin-left: 0.5rem;
+        }
+        .sensor-icon {
+            font-size: 2.5rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 0.5rem;
+            animation: pulse 2s infinite;
+        }
+        .status-indicator.online {
+            background: #28a745;
+        }
+        .status-indicator.offline {
+            background: #dc3545;
+        }
+        .chart-container {
+            position: relative;
+            height: 200px;
+            margin: 1rem 0;
+        }
+        .control-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        .control-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 1rem 2rem;
+            margin: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102,126,234,0.3);
+        }
+        .control-btn:active {
+            transform: translateY(0);
+        }
+        .alert-banner {
+            background: linear-gradient(135deg, #dc3545, #fd7e14);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            display: none;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        .last-update {
+            font-size: 0.9rem;
+            color: #6c757d;
+            text-align: center;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow-sm bg-gradient navbar-blur">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="Pagina con infor.html">
+                <img src="imagenes/Logoremo.png" alt="Logo Petsear" style="height: 48px; width: 48px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); background: #fff; padding: 2px;">
+                <span class="fw-bold fs-3" style="letter-spacing: 1px;">Petsear</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="Pagina con infor.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="chatbot-animales.html">Chatbot</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="test-mascotas.html">Test</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="sensores-tiempo-real.html">Sensores</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sensors Container -->
+    <div class="sensors-container">
+        <div class="container">
+            <!-- Header -->
+            <div class="text-center mb-5">
+                <h1 class="display-4 fw-bold text-white mb-3">📊 Monitoreo en Tiempo Real</h1>
+                <p class="lead text-white-50">Datos de sensores de tu mascota actualizados en vivo</p>
+                <div class="d-flex justify-content-center align-items-center">
+                    <span class="status-indicator online" id="connectionStatus"></span>
+                    <span class="text-white" id="connectionText">Conectado</span>
+                </div>
+            </div>
+
+            <!-- Alert Banner -->
+            <div class="alert-banner" id="alertBanner">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <span id="alertMessage">Alerta: Valores fuera de rango normal</span>
+            </div>
+
+            <!-- Sensors Grid -->
+            <div class="row">
+                <!-- Heart Rate Sensor -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="sensor-card" id="heartRateCard">
+                        <div class="text-center">
+                            <div class="sensor-icon">❤️</div>
+                            <h4>Ritmo Cardíaco</h4>
+                            <div class="sensor-value" id="heartRateValue">--</div>
+                            <div class="sensor-unit">BPM</div>
+                            <div class="chart-container">
+                                <canvas id="heartRateChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Temperature Sensor -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="sensor-card" id="temperatureCard">
+                        <div class="text-center">
+                            <div class="sensor-icon">🌡️</div>
+                            <h4>Temperatura</h4>
+                            <div class="sensor-value" id="temperatureValue">--</div>
+                            <div class="sensor-unit">°C</div>
+                            <div class="chart-container">
+                                <canvas id="temperatureChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Distance Sensor -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="sensor-card" id="distanceCard">
+                        <div class="text-center">
+                            <div class="sensor-icon">📏</div>
+                            <h4>Distancia</h4>
+                            <div class="sensor-value" id="distanceValue">--</div>
+                            <div class="sensor-unit">cm</div>
+                            <div class="chart-container">
+                                <canvas id="distanceChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Battery Level -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="sensor-card" id="batteryCard">
+                        <div class="text-center">
+                            <div class="sensor-icon">🔋</div>
+                            <h4>Batería</h4>
+                            <div class="sensor-value" id="batteryValue">--</div>
+                            <div class="sensor-unit">%</div>
+                            <div class="progress mt-3">
+                                <div class="progress-bar" id="batteryBar" role="progressbar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GPS Location -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="sensor-card" id="gpsCard">
+                        <div class="text-center">
+                            <div class="sensor-icon">📍</div>
+                            <h4>Ubicación GPS</h4>
+                            <div class="sensor-value" id="gpsLat">--</div>
+                            <div class="sensor-unit">Latitud</div>
+                            <div class="sensor-value" id="gpsLng">--</div>
+                            <div class="sensor-unit">Longitud</div>
+                            <button class="btn btn-sm btn-outline-primary mt-2" onclick="openInMaps()">
+                                <i class="fas fa-map-marked-alt me-1"></i>Ver en Mapa
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                            <!-- System Status -->
+            <div class="col-lg-4 col-md-6">
+                <div class="sensor-card" id="systemCard">
+                    <div class="text-center">
+                        <div class="sensor-icon">⚙️</div>
+                        <h4>Estado del Sistema</h4>
+                        <div class="mt-3">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>WiFi:</span>
+                                <span class="badge bg-success" id="wifiStatus">Conectado</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Dispensador:</span>
+                                <span class="badge bg-info" id="dispenserStatus">Cerrado</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Última actualización:</span>
+                                <span id="lastUpdate">--</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ESP32 Connection Status -->
+            <div class="col-lg-4 col-md-6">
+                <div class="sensor-card" id="esp32Card">
+                    <div class="text-center">
+                        <div class="sensor-icon">🔌</div>
+                        <h4>Conexión ESP32</h4>
+                        <div class="mt-3">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Estado:</span>
+                                <span id="esp32Status">Desconectado</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>IP del ESP32:</span>
+                                <span id="esp32IP">No encontrado</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Última actividad:</span>
+                                <span id="lastActivity">--</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Distancia sensor:</span>
+                                <span id="sensorDistance">--</span>
+                            </div>
+                            <button onclick="findESP32()" class="btn btn-sm btn-outline-primary mt-2">
+                                <i class="fas fa-search me-1"></i>Buscar ESP32
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <!-- Control Panel -->
+            <div class="control-panel">
+                <h3 class="text-center mb-4">🎛️ Panel de Control</h3>
+                <div class="text-center">
+                    <button class="control-btn" onclick="toggleDispenser()" id="dispenserBtn">
+                        <i class="fas fa-door-open me-2"></i>Abrir Dispensador
+                    </button>
+                    <button class="control-btn" onclick="abrirCompuerta()">
+                        <i class="fas fa-utensils me-2"></i>Dispensar Comida
+                    </button>
+                    <button class="control-btn" onclick="emergencyCall()">
+                        <i class="fas fa-phone me-2"></i>Llamada de Emergencia
+                    </button>
+                    <button class="control-btn" onclick="refreshData()">
+                        <i class="fas fa-sync-alt me-2"></i>Actualizar Datos
+                    </button>
+                    <button class="control-btn" onclick="toggleSimulation()" id="simulationBtn">
+                        <i class="fas fa-play me-2"></i>Iniciar Simulación
+                    </button>
+                    <button class="control-btn" onclick="openESP32Interface()">
+                        <i class="fas fa-external-link-alt me-2"></i>Interfaz ESP32
+                    </button>
+                    <button class="control-btn" onclick="showHeartRateStats()">
+                        <i class="fas fa-heartbeat me-2"></i>Estadísticas Sensor
+                    </button>
+                </div>
+            </div>
+
+            <!-- Last Update -->
+            <div class="last-update" id="lastUpdateText">
+                Última actualización: Nunca
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase Configuration -->
+    <script type="module" src="js/firebase-config.js"></script>
+    <script src="js/notificaciones.js"></script>
+    <script src="js/modo-oscuro.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <script>
+        // Charts configuration
+        let heartRateChart, temperatureChart, distanceChart;
+        let simulationInterval;
+        let isSimulationRunning = false;
+
+        // Initialize charts
+        function initializeCharts() {
+            const chartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        display: false
+                    },
+                    y: {
+                        display: false
+                    }
+                },
+                elements: {
+                    point: {
+                        radius: 0
+                    }
+                }
+            };
+
+            // Heart Rate Chart
+            const heartRateCtx = document.getElementById('heartRateChart').getContext('2d');
+            heartRateChart = new Chart(heartRateCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        data: [],
+                        borderColor: '#dc3545',
+                        backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: chartOptions
+            });
+
+            // Temperature Chart
+            const temperatureCtx = document.getElementById('temperatureChart').getContext('2d');
+            temperatureChart = new Chart(temperatureCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        data: [],
+                        borderColor: '#fd7e14',
+                        backgroundColor: 'rgba(253, 126, 20, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: chartOptions
+            });
+
+            // Distance Chart
+            const distanceCtx = document.getElementById('distanceChart').getContext('2d');
+            distanceChart = new Chart(distanceCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        data: [],
+                        borderColor: '#28a745',
+                        backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: chartOptions
+            });
+        }
+
+        // Update sensor values
+        function updateSensorValue(elementId, value, unit = '') {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.textContent = value + (unit ? ' ' + unit : '');
+            }
+        }
+
+        // Update chart data
+        function updateChart(chart, value) {
+            const maxDataPoints = 20;
+            chart.data.labels.push(new Date().toLocaleTimeString());
+            chart.data.datasets[0].data.push(value);
+
+            if (chart.data.labels.length > maxDataPoints) {
+                chart.data.labels.shift();
+                chart.data.datasets[0].data.shift();
+            }
+
+            chart.update('none');
+        }
+
+        // Check for alerts
+        function checkAlerts(data) {
+            let alerts = [];
+            
+            if (data.heartRate > 120 || data.heartRate < 60) {
+                alerts.push('Ritmo cardíaco fuera de rango normal');
+                document.getElementById('heartRateCard').className = 'sensor-card danger';
+            } else {
+                document.getElementById('heartRateCard').className = 'sensor-card';
+            }
+
+            if (data.temperature > 39 || data.temperature < 37) {
+                alerts.push('Temperatura anormal');
+                document.getElementById('temperatureCard').className = 'sensor-card warning';
+            } else {
+                document.getElementById('temperatureCard').className = 'sensor-card';
+            }
+
+            if (data.battery < 20) {
+                alerts.push('Batería baja');
+                document.getElementById('batteryCard').className = 'sensor-card warning';
+            } else {
+                document.getElementById('batteryCard').className = 'sensor-card';
+            }
+
+            // Show/hide alert banner
+            const alertBanner = document.getElementById('alertBanner');
+            if (alerts.length > 0) {
+                document.getElementById('alertMessage').textContent = alerts.join(', ');
+                alertBanner.style.display = 'block';
+            } else {
+                alertBanner.style.display = 'none';
+            }
+        }
+
+        // Generate simulated data
+        function generateSimulatedData() {
+            const data = {
+                heartRate: Math.floor(Math.random() * 40) + 80, // 80-120 BPM
+                temperature: (Math.random() * 2) + 37.5, // 37.5-39.5°C
+                distance: Math.floor(Math.random() * 50) + 10, // 10-60 cm
+                battery: Math.floor(Math.random() * 30) + 70, // 70-100%
+                latitude: 8.9833 + (Math.random() - 0.5) * 0.01, // Panama coordinates
+                longitude: -79.5167 + (Math.random() - 0.5) * 0.01,
+                timestamp: new Date().toISOString()
+            };
+
+            return data;
+        }
+
+        // Update UI with sensor data
+        function updateSensorUI(data) {
+            // Update values
+            updateSensorValue('heartRateValue', data.heartRate);
+            updateSensorValue('temperatureValue', data.temperature.toFixed(1));
+            updateSensorValue('distanceValue', data.distance);
+            updateSensorValue('batteryValue', data.battery);
+            updateSensorValue('gpsLat', data.latitude.toFixed(4));
+            updateSensorValue('gpsLng', data.longitude.toFixed(4));
+
+            // Update charts
+            updateChart(heartRateChart, data.heartRate);
+            updateChart(temperatureChart, data.temperature);
+            updateChart(distanceChart, data.distance);
+
+            // Update battery bar
+            document.getElementById('batteryBar').style.width = data.battery + '%';
+            document.getElementById('batteryBar').className = `progress-bar ${data.battery < 20 ? 'bg-danger' : data.battery < 50 ? 'bg-warning' : 'bg-success'}`;
+
+            // Update last update time
+            const now = new Date().toLocaleTimeString();
+            document.getElementById('lastUpdate').textContent = now;
+            document.getElementById('lastUpdateText').textContent = `Última actualización: ${now}`;
+
+            // Check for alerts
+            checkAlerts(data);
+
+            // Save to Firebase
+            saveSensorData(data);
+        }
+
+        // Save sensor data to Firebase
+        async function saveSensorData(data) {
+            if (!window.isUserAuthenticated || !window.isUserAuthenticated()) {
+                return;
+            }
+
+            try {
+                await window.saveUserData({
+                    ...data,
+                    deviceId: 'petsear-sensor-001',
+                    pagina: 'sensores-tiempo-real'
+                }, 'sensor_data');
+            } catch (error) {
+                console.error('Error saving sensor data:', error);
+            }
+        }
+
+        // Control functions
+        function toggleDispenser() {
+            const btn = document.getElementById('dispenserBtn');
+            const status = document.getElementById('dispenserStatus');
+            
+            if (btn.innerHTML.includes('Abrir')) {
+                btn.innerHTML = '<i class="fas fa-door-closed me-2"></i>Cerrar Dispensador';
+                status.textContent = 'Abierto';
+                status.className = 'badge bg-success';
+                showNotification('Dispensador abierto', 'success');
+            } else {
+                btn.innerHTML = '<i class="fas fa-door-open me-2"></i>Abrir Dispensador';
+                status.textContent = 'Cerrado';
+                status.className = 'badge bg-info';
+                showNotification('Dispensador cerrado', 'info');
+            }
+        }
+
+        function emergencyCall() {
+            showNotification('Llamando al veterinario de emergencia...', 'warning');
+            // Simulate emergency call
+            setTimeout(() => {
+                showNotification('Llamada de emergencia realizada', 'success');
+            }, 2000);
+        }
+
+        function refreshData() {
+            const data = generateSimulatedData();
+            updateSensorUI(data);
+            showNotification('Datos actualizados', 'info');
+        }
+
+        function toggleSimulation() {
+            const btn = document.getElementById('simulationBtn');
+            
+            if (isSimulationRunning) {
+                clearInterval(simulationInterval);
+                btn.innerHTML = '<i class="fas fa-play me-2"></i>Iniciar Simulación';
+                isSimulationRunning = false;
+                showNotification('Simulación detenida', 'info');
+            } else {
+                simulationInterval = setInterval(() => {
+                    const data = generateSimulatedData();
+                    updateSensorUI(data);
+                }, 3000);
+                btn.innerHTML = '<i class="fas fa-pause me-2"></i>Detener Simulación';
+                isSimulationRunning = true;
+                showNotification('Simulación iniciada', 'success');
+            }
+        }
+
+        function openInMaps() {
+            const lat = document.getElementById('gpsLat').textContent;
+            const lng = document.getElementById('gpsLng').textContent;
+            if (lat !== '--' && lng !== '--') {
+                window.open(`https://www.google.com/maps?q=${lat},${lng}`, '_blank');
+            }
+        }
+
+        function showNotification(message, type) {
+            if (window.mostrarToastPetsear) {
+                window.mostrarToastPetsear({
+                    icono: type === 'success' ? '✅' : type === 'warning' ? '⚠️' : 'ℹ️',
+                    titulo: 'Sensores Petsear',
+                    mensaje: message,
+                    color: type === 'success' ? 'linear-gradient(90deg,#28a745,#20c997)' : 
+                           type === 'warning' ? 'linear-gradient(90deg,#ffc107,#fd7e14)' : 
+                           'linear-gradient(90deg,#667eea,#764ba2)'
+                });
+            }
+        }
+
+        // Función para buscar el ESP32 en la red local
+        async function findESP32() {
+            // Intentar con IPs comunes del ESP32, incluyendo la IP específica del usuario
+            const commonIPs = [
+                '192.168.0.5',      // IP específica del usuario
+                '192.168.0.100',
+                '192.168.0.101', 
+                '192.168.0.102',
+                '192.168.0.103',
+                '192.168.0.104',
+                '192.168.0.105',
+                '192.168.1.100',
+                '192.168.1.101',
+                '192.168.1.102',
+                '192.168.1.103',
+                '192.168.1.104',
+                '192.168.1.105'
+            ];
+            
+            for (let ip of commonIPs) {
+                try {
+                    console.log(`🔍 Probando IP: ${ip}`);
+                    const response = await fetch(`http://${ip}/status`, {
+                        method: 'GET',
+                        timeout: 3000
+                    });
+                    
+                    if (response.ok) {
+                        esp32IP = ip;
+                        connectionStatus = true;
+                        showNotification(`ESP32 encontrado en ${ip} ✅`, 'success');
+                        updateConnectionStatus();
+                        return;
+                    }
+                } catch (error) {
+                    console.log(`❌ IP ${ip} no responde:`, error.message);
+                }
+            }
+            
+            // Si no se encuentra, mostrar mensaje
+            showNotification('ESP32 no encontrado. Verifica la conexión ⚠️', 'error');
+            updateConnectionStatus();
+        }
+
+        // Función para verificar la conexión con el ESP32
+        async function checkConnection() {
+            if (!esp32IP) return;
+            
+            try {
+                const response = await fetch(`http://${esp32IP}/status`, {
+                    method: 'GET',
+                    timeout: 3000
+                });
+                
+                if (response.ok) {
+                    if (!connectionStatus) {
+                        connectionStatus = true;
+                        showNotification('Conexión restaurada con ESP32 ✅', 'success');
+                        updateConnectionStatus();
+                    }
+                } else {
+                    if (connectionStatus) {
+                        connectionStatus = false;
+                        showNotification('Conexión perdida con ESP32 ❌', 'error');
+                        updateConnectionStatus();
+                    }
+                }
+            } catch (error) {
+                if (connectionStatus) {
+                    connectionStatus = false;
+                    showNotification('Conexión perdida con ESP32 ❌', 'error');
+                    updateConnectionStatus();
+                }
+            }
+        }
+
+        // Función para actualizar el estado de conexión en la UI
+        function updateConnectionStatus() {
+            const statusElement = document.getElementById('esp32Status');
+            const ipElement = document.getElementById('esp32IP');
+            const connectionStatusElement = document.getElementById('connectionStatus');
+            const connectionTextElement = document.getElementById('connectionText');
+            
+            if (statusElement) {
+                statusElement.textContent = connectionStatus ? 'Conectado' : 'Desconectado';
+                statusElement.className = connectionStatus ? 'text-success' : 'text-danger';
+            }
+            
+            if (ipElement) {
+                ipElement.textContent = esp32IP || 'No encontrado';
+            }
+            
+            if (connectionStatusElement) {
+                connectionStatusElement.className = `status-indicator ${connectionStatus ? 'online' : 'offline'}`;
+            }
+            
+            if (connectionTextElement) {
+                connectionTextElement.textContent = connectionStatus ? 'Conectado' : 'Desconectado';
+            }
+            
+            // Actualizar última actividad
+            const lastActivityElement = document.getElementById('lastActivity');
+            if (lastActivityElement) {
+                if (connectionStatus) {
+                    const now = new Date();
+                    lastActivityElement.textContent = now.toLocaleTimeString();
+                } else {
+                    lastActivityElement.textContent = '--';
+                }
+            }
+        }
+
+        // Gate Control Function
+        async function abrirCompuerta() {
+            const button = event.target.closest('button');
+            if (button) {
+                button.classList.add('loading');
+                button.disabled = true;
+            }
+            
+            if (!esp32IP) {
+                showNotification('ESP32 no encontrado. Buscando... 🔍', 'error');
+                await findESP32();
+                if (button) {
+                    button.classList.remove('loading');
+                    button.disabled = false;
+                }
+                return;
+            }
+            
+            try {
+                const response = await fetch(`http://${esp32IP}/abrir`, {
+                    method: 'GET',
+                    timeout: 5000
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    showNotification('Compuerta abierta exitosamente ✅', 'success');
+                    
+                    // Actualizar estado visual
+                    setTimeout(() => {
+                        showNotification('Compuerta cerrada automáticamente 🔒', 'info');
+                    }, 3000);
+                } else {
+                    showNotification('Error en la solicitud ❌', 'error');
+                }
+            } catch (error) {
+                showNotification('Error de conexión con ESP32 ❌', 'error');
+                console.error('Gate control error:', error);
+                connectionStatus = false;
+                updateConnectionStatus();
+            } finally {
+                if (button) {
+                    button.classList.remove('loading');
+                    button.disabled = false;
+                }
+            }
+        }
+
+        // Función para obtener el estado del ESP32
+        async function getESP32Status() {
+            if (!esp32IP) return null;
+            
+            try {
+                const response = await fetch(`http://${esp32IP}/status`, {
+                    method: 'GET',
+                    timeout: 3000
+                });
+                
+                if (response.ok) {
+                    return await response.json();
+                }
+            } catch (error) {
+                console.error('Error getting ESP32 status:', error);
+            }
+            
+            return null;
+        }
+
+        // Función para abrir la interfaz web del ESP32
+        function openESP32Interface() {
+            if (esp32IP) {
+                window.open(`http://${esp32IP}`, '_blank');
+            } else {
+                showNotification('ESP32 no encontrado. Buscando... 🔍', 'error');
+                findESP32();
+            }
+        }
+
+        // Función para actualizar información del sensor
+        async function updateSensorInfo() {
+            if (!esp32IP || !connectionStatus) return;
+            
+            try {
+                const status = await getESP32Status();
+                if (status) {
+                    const distanceElement = document.getElementById('sensorDistance');
+                    if (distanceElement) {
+                        distanceElement.textContent = status.distancia + ' cm';
+                    }
+                }
+            } catch (error) {
+                console.error('Error updating sensor info:', error);
+            }
+        }
+
+        // Función para obtener datos específicos del sensor de ritmo cardíaco
+        async function getHeartRateData() {
+            if (!esp32IP || !connectionStatus) {
+                showNotification('No hay conexión con ESP32 ❌', 'error');
+                return null;
+            }
+            
+            try {
+                const response = await fetch(`http://${esp32IP}/heartrate`, {
+                    method: 'GET',
+                    timeout: 3000
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    return data;
+                } else {
+                    showNotification('Error obteniendo datos del sensor ❌', 'error');
+                    return null;
+                }
+            } catch (error) {
+                console.error('Error getting heart rate data:', error);
+                showNotification('Error de conexión con el sensor ❌', 'error');
+                return null;
+            }
+        }
+
+        // Función para mostrar estadísticas del sensor
+        async function showHeartRateStats() {
+            const data = await getHeartRateData();
+            if (data) {
+                let message = `📊 Estadísticas del Sensor:\n`;
+                message += `💓 Ritmo Cardíaco: ${Math.round(data.heartRate)} BPM\n`;
+                message += `🩸 SpO2: ${Math.round(data.spO2)}%\n`;
+                message += `✅ Estado: ${data.valid ? 'Válido' : 'No válido'}`;
+                
+                showNotification(message, 'info');
+            }
+        }
+
+        // Variables globales para ESP32
+        let esp32IP = null;
+        let connectionStatus = false;
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCharts();
+            
+            // Start with initial data
+            const initialData = generateSimulatedData();
+            updateSensorUI(initialData);
+            
+            // Start simulation automatically
+            toggleSimulation();
+            
+            // Buscar ESP32 en la red
+            findESP32();
+            
+            // Verificar conexión cada 5 segundos
+            setInterval(checkConnection, 5000);
+            
+            // Actualizar información del sensor cada 2 segundos
+            setInterval(updateSensorInfo, 2000);
+            
+            // Initialize AOS
+            AOS.init();
+        });
+    </script>
+</body>
+</html> 
