@@ -248,6 +248,10 @@ function addUserMessage(message) {
     `;
     chatMessages.appendChild(messageElement);
     scrollToBottom();
+    // Guardar en Firebase
+    if (window.saveMessageToFirebase && window.isUserAuthenticated && window.isUserAuthenticated()) {
+        window.saveMessageToFirebase(message, 'user', 'chat_messages');
+    }
 }
 
 // Función para agregar mensaje del bot
@@ -260,6 +264,10 @@ function addBotMessage(message) {
     `;
     chatMessages.appendChild(messageElement);
     scrollToBottom();
+    // Guardar en Firebase
+    if (window.saveMessageToFirebase && window.isUserAuthenticated && window.isUserAuthenticated()) {
+        window.saveMessageToFirebase(message, 'bot', 'chat_messages');
+    }
 }
 
 // Función para obtener hora actual
