@@ -335,7 +335,7 @@
     
     <script type="module">
         // Charts configuration
-        let heartRateChart, temperatureChart, distanceChart;
+        let heartRateChart, distanceChart;
         let simulationInterval;
         let isSimulationRunning = false;
 
@@ -382,23 +382,7 @@
                 options: chartOptions
             });
 
-            // Temperature Chart
-            const temperatureCtx = document.getElementById('temperatureChart').getContext('2d');
-            temperatureChart = new Chart(temperatureCtx, {
-                type: 'line',
-                data: {
-                    labels: [],
-                    datasets: [{
-                        data: [],
-                        borderColor: '#fd7e14',
-                        backgroundColor: 'rgba(253, 126, 20, 0.1)',
-                        borderWidth: 2,
-                        fill: true,
-                        tension: 0.4
-                    }]
-                },
-                options: chartOptions
-            });
+            
 
             // Distance Chart
             const distanceCtx = document.getElementById('distanceChart').getContext('2d');
@@ -594,7 +578,7 @@
             const lat = document.getElementById('gpsLat').textContent;
             const lng = document.getElementById('gpsLng').textContent;
             if (lat !== '--' && lng !== '--') {
-                window.open(`https://www.google.com/maps?q=${lat},${lng}`, '_blank');
+                window.open(`https://maps.app.goo.gl/J2kt8tJbaPopR4qQ7?g_st=ac${lat},${lng}`, '_blank');
             }
         }
 
