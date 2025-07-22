@@ -492,12 +492,12 @@
 
             // Update battery bar
             document.getElementById('batteryBar').style.width = data.battery + '%';
-            document.getElementById('batteryBar').className = `progress-bar ${data.battery < 20 ? 'bg-danger' : data.battery < 50 ? 'bg-warning' : 'bg-success'}`;
+            document.getElementById('batteryBar').className = progress-bar ${data.battery < 20 ? 'bg-danger' : data.battery < 50 ? 'bg-warning' : 'bg-success'};
 
             // Update last update time
             const now = new Date().toLocaleTimeString();
             document.getElementById('lastUpdate').textContent = now;
-            document.getElementById('lastUpdateText').textContent = `Última actualización: ${now}`;
+            document.getElementById('lastUpdateText').textContent = Última actualización: ${now};
 
             // Check for alerts
             checkAlerts(data);
@@ -574,14 +574,16 @@
             }
         }
 
- function openInMaps() {
-            const lat = document.getElementById('gpsLat').textContent;
-            const lng = document.getElementById('gpsLng').textContent;
-            if (lat !== '--' && lng !== '--') {
-                window.open(`https://maps.app.goo.gl/J2kt8tJbaPopR4qQ7?g_st=ac${lat},${lng}`, '_blank');
-            }
-        }
-        
+      function openInMaps() {
+    const lat = document.getElementById('gpsLat').textContent.trim();
+    const lng = document.getElementById('gpsLng').textContent.trim();
+    if (lat !== '--' && lng !== '--') {
+        const url = https://www.google.com/maps?q=${lat},${lng};
+        window.open(url, '_blank');
+    } else {
+        alert('Ubicación no disponible');
+    }
+}
         function showNotification(message, type) {
             if (window.mostrarToastPetsear) {
                 window.mostrarToastPetsear({
@@ -616,8 +618,8 @@
             
             for (let ip of commonIPs) {
                 try {
-                    console.log(`🔍 Probando IP: ${ip}`);
-                    const response = await fetch(`http://${ip}/status`, {
+                    console.log(🔍 Probando IP: ${ip});
+                    const response = await fetch(http://${ip}/status, {
                         method: 'GET',
                         timeout: 3000
                     });
@@ -625,12 +627,12 @@
                     if (response.ok) {
                         esp32IP = ip;
                         connectionStatus = true;
-                        showNotification(`ESP32 encontrado en ${ip} ✅`, 'success');
+                        showNotification(ESP32 encontrado en ${ip} ✅, 'success');
                         updateConnectionStatus();
                         return;
                     }
                 } catch (error) {
-                    console.log(`❌ IP ${ip} no responde:`, error.message);
+                    console.log(❌ IP ${ip} no responde:, error.message);
                 }
             }
             
@@ -644,7 +646,7 @@
             if (!esp32IP) return;
             
             try {
-                const response = await fetch(`http://${esp32IP}/status`, {
+                const response = await fetch(http://${esp32IP}/status, {
                     method: 'GET',
                     timeout: 3000
                 });
@@ -688,7 +690,7 @@
             }
             
             if (connectionStatusElement) {
-                connectionStatusElement.className = `status-indicator ${connectionStatus ? 'online' : 'offline'}`;
+                connectionStatusElement.className = status-indicator ${connectionStatus ? 'online' : 'offline'};
             }
             
             if (connectionTextElement) {
@@ -726,7 +728,7 @@
             }
             
             try {
-                const response = await fetch(`http://${esp32IP}/abrir`, {
+                const response = await fetch(http://${esp32IP}/abrir, {
                     method: 'GET',
                     timeout: 5000
                 });
@@ -760,7 +762,7 @@
             if (!esp32IP) return null;
             
             try {
-                const response = await fetch(`http://${esp32IP}/status`, {
+                const response = await fetch(http://${esp32IP}/status, {
                     method: 'GET',
                     timeout: 3000
                 });
@@ -778,7 +780,7 @@
         // Función para abrir la interfaz web del ESP32
         function openESP32Interface() {
             if (esp32IP) {
-                window.open(`http://${esp32IP}`, '_blank');
+                window.open(http://${esp32IP}, '_blank');
             } else {
                 showNotification('ESP32 no encontrado. Buscando... 🔍', 'error');
                 findESP32();
@@ -810,7 +812,7 @@
             }
             
             try {
-                const response = await fetch(`http://${esp32IP}/heartrate`, {
+                const response = await fetch(http://${esp32IP}/heartrate, {
                     method: 'GET',
                     timeout: 3000
                 });
@@ -833,10 +835,10 @@
         async function showHeartRateStats() {
             const data = await getHeartRateData();
             if (data) {
-                let message = `📊 Estadísticas del Sensor:\n`;
-                message += `💓 Ritmo Cardíaco: ${Math.round(data.heartRate)} BPM\n`;
-                message += `🩸 SpO2: ${Math.round(data.spO2)}%\n`;
-                message += `✅ Estado: ${data.valid ? 'Válido' : 'No válido'}`;
+                let message = 📊 Estadísticas del Sensor:\n;
+                message += 💓 Ritmo Cardíaco: ${Math.round(data.heartRate)} BPM\n;
+                message += 🩸 SpO2: ${Math.round(data.spO2)}%\n;
+                message += ✅ Estado: ${data.valid ? 'Válido' : 'No válido'};
                 
                 showNotification(message, 'info');
             }
@@ -868,4 +870,4 @@
         });
     </script>
 </body>
-</html> 
+</html>
