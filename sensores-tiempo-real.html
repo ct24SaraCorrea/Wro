@@ -574,14 +574,16 @@
             }
         }
 
-        function openInMaps() {
-            const lat = document.getElementById('gpsLat').textContent;
-            const lng = document.getElementById('gpsLng').textContent;
-            if (lat !== '--' && lng !== '--') {
-                window.open(`https://maps.app.goo.gl/J2kt8tJbaPopR4qQ7?g_st=ac');
-            }
-        }
-
+      function openInMaps() {
+    const lat = document.getElementById('gpsLat').textContent.trim();
+    const lng = document.getElementById('gpsLng').textContent.trim();
+    if (lat !== '--' && lng !== '--') {
+        const url = https://www.google.com/maps?q=${lat},${lng};
+        window.open(url, '_blank');
+    } else {
+        alert('Ubicación no disponible');
+    }
+}
         function showNotification(message, type) {
             if (window.mostrarToastPetsear) {
                 window.mostrarToastPetsear({
