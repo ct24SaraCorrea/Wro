@@ -382,8 +382,6 @@
                 options: chartOptions
             });
 
-            
-
             // Distance Chart
             const distanceCtx = document.getElementById('distanceChart').getContext('2d');
             distanceChart = new Chart(distanceCtx, {
@@ -436,13 +434,6 @@
                 document.getElementById('heartRateCard').className = 'sensor-card';
             }
 
-            if (data.temperature > 39 || data.temperature < 37) {
-                alerts.push('Temperatura anormal');
-                document.getElementById('temperatureCard').className = 'sensor-card warning';
-            } else {
-                document.getElementById('temperatureCard').className = 'sensor-card';
-            }
-
             if (data.battery < 20) {
                 alerts.push('Batería baja');
                 document.getElementById('batteryCard').className = 'sensor-card warning';
@@ -464,9 +455,8 @@
         function generateSimulatedData() {
             const data = {
                 heartRate: Math.floor(Math.random() * 40) + 80, // 80-120 BPM
-                temperature: (Math.random() * 2) + 37.5, // 37.5-39.5°C
                 distance: Math.floor(Math.random() * 50) + 10, // 10-60 cm
-                battery: Math.floor(Math.random() * 30) + 70, // 70-100%
+                battery: Math.floor(Math.random() * 31) + 70, // 70-100% entero
                 latitude: 8.9833 + (Math.random() - 0.5) * 0.01, // Panama coordinates
                 longitude: -79.5167 + (Math.random() - 0.5) * 0.01,
                 timestamp: new Date().toISOString()
@@ -479,7 +469,6 @@
         function updateSensorUI(data) {
             // Update values
             updateSensorValue('heartRateValue', data.heartRate);
-            updateSensorValue('temperatureValue', data.temperature.toFixed(1));
             updateSensorValue('distanceValue', data.distance);
             updateSensorValue('batteryValue', data.battery);
             updateSensorValue('gpsLat', data.latitude.toFixed(4));
@@ -487,17 +476,16 @@
 
             // Update charts
             updateChart(heartRateChart, data.heartRate);
-            updateChart(temperatureChart, data.temperature);
             updateChart(distanceChart, data.distance);
 
             // Update battery bar
             document.getElementById('batteryBar').style.width = data.battery + '%';
-            document.getElementById('batteryBar').className = progress-bar ${data.battery < 20 ? 'bg-danger' : data.battery < 50 ? 'bg-warning' : 'bg-success'};
+            document.getElementById('batteryBar').className = `progress-bar ${data.battery < 20 ? 'bg-danger' : data.battery < 50 ? 'bg-warning' : 'bg-success'}`;
 
             // Update last update time
             const now = new Date().toLocaleTimeString();
             document.getElementById('lastUpdate').textContent = now;
-            document.getElementById('lastUpdateText').textContent = Última actualización: ${now};
+            document.getElementById('lastUpdateText').textContent = `Última actualización: ${now}`;
 
             // Check for alerts
             checkAlerts(data);
@@ -575,15 +563,8 @@
         }
 
       function openInMaps() {
-    const lat = document.getElementById('gpsLat').textContent.trim();
-    const lng = document.getElementById('gpsLng').textContent.trim();
-    if (lat !== '--' && lng !== '--') {
-        const url = https://www.google.com/maps?q=${lat},${lng};
-        window.open(url, '_blank');
-    } else {
-        alert('Ubicación no disponible');
+        window.open('https://maps.google.com', '_blank', 'noopener');
     }
-}
         function showNotification(message, type) {
             if (window.mostrarToastPetsear) {
                 window.mostrarToastPetsear({
@@ -618,21 +599,20 @@
             
             for (let ip of commonIPs) {
                 try {
-                    console.log(🔍 Probando IP: ${ip});
-                    const response = await fetch(http://${ip}/status, {
-                        method: 'GET',
-                        timeout: 3000
+                    console.log(`🔍 Probando IP: ${ip}`);
+                    const response = await fetch(`http://${ip}/status`, {
+                        method: 'GET'
                     });
                     
                     if (response.ok) {
                         esp32IP = ip;
                         connectionStatus = true;
-                        showNotification(ESP32 encontrado en ${ip} ✅, 'success');
+                        showNotification(`ESP32 encontrado en ${ip} ✅`, 'success');
                         updateConnectionStatus();
                         return;
                     }
                 } catch (error) {
-                    console.log(❌ IP ${ip} no responde:, error.message);
+                    console.log(`❌ IP ${ip} no responde:`, error.message);
                 }
             }
             
@@ -646,9 +626,8 @@
             if (!esp32IP) return;
             
             try {
-                const response = await fetch(http://${esp32IP}/status, {
-                    method: 'GET',
-                    timeout: 3000
+                const response = await fetch(`http://${esp32IP}/status`, {
+                    method: 'GET'
                 });
                 
                 if (response.ok) {
@@ -690,7 +669,7 @@
             }
             
             if (connectionStatusElement) {
-                connectionStatusElement.className = status-indicator ${connectionStatus ? 'online' : 'offline'};
+                connectionStatusElement.className = `status-indicator ${connectionStatus ? 'online' : 'offline'}`;
             }
             
             if (connectionTextElement) {
@@ -728,9 +707,8 @@
             }
             
             try {
-                const response = await fetch(http://${esp32IP}/abrir, {
-                    method: 'GET',
-                    timeout: 5000
+                const response = await fetch(`http://${esp32IP}/abrir`, {
+                    method: 'GET'
                 });
                 
                 if (response.ok) {
@@ -762,9 +740,8 @@
             if (!esp32IP) return null;
             
             try {
-                const response = await fetch(http://${esp32IP}/status, {
-                    method: 'GET',
-                    timeout: 3000
+                const response = await fetch(`http://${esp32IP}/status`, {
+                    method: 'GET'
                 });
                 
                 if (response.ok) {
@@ -780,7 +757,7 @@
         // Función para abrir la interfaz web del ESP32
         function openESP32Interface() {
             if (esp32IP) {
-                window.open(http://${esp32IP}, '_blank');
+                window.open(`http://${esp32IP}`, '_blank');
             } else {
                 showNotification('ESP32 no encontrado. Buscando... 🔍', 'error');
                 findESP32();
@@ -812,9 +789,8 @@
             }
             
             try {
-                const response = await fetch(http://${esp32IP}/heartrate, {
-                    method: 'GET',
-                    timeout: 3000
+                const response = await fetch(`http://${esp32IP}/heartrate`, {
+                    method: 'GET'
                 });
                 
                 if (response.ok) {
@@ -835,11 +811,10 @@
         async function showHeartRateStats() {
             const data = await getHeartRateData();
             if (data) {
-                let message = 📊 Estadísticas del Sensor:\n;
-                message += 💓 Ritmo Cardíaco: ${Math.round(data.heartRate)} BPM\n;
-                message += 🩸 SpO2: ${Math.round(data.spO2)}%\n;
-                message += ✅ Estado: ${data.valid ? 'Válido' : 'No válido'};
-                
+                let message = `📊 Estadísticas del Sensor:\n`;
+                message += `💓 Ritmo Cardíaco: ${Math.round(data.heartRate)} BPM\n`;
+                message += `🩸 SpO2: ${Math.round(data.spO2)}%\n`;
+                message += `✅ Estado: ${data.valid ? 'Válido' : 'No válido'}`;
                 showNotification(message, 'info');
             }
         }
@@ -851,13 +826,13 @@
         // Initialize everything
         document.addEventListener('DOMContentLoaded', function() {
             initializeCharts();
-            // Esperar a que Firebase esté listo antes de iniciar simulación y guardar datos
+            // Iniciar simulación y datos iniciales SIEMPRE
+            const initialData = generateSimulatedData();
+            updateSensorUI(initialData);
+            toggleSimulation();
+            // Si Firebase se autentica después, puedes mostrar un mensaje o nada
             window.addEventListener('firebaseAuthReady', function() {
-                // Start with initial data
-                const initialData = generateSimulatedData();
-                updateSensorUI(initialData);
-                // Start simulation automatically
-                toggleSimulation();
+                // Opcional: showNotification('Autenticación con Firebase lista', 'success');
             }, { once: true });
             // Buscar ESP32 en la red
             findESP32();
