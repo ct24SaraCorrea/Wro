@@ -193,9 +193,9 @@
                     <div class="sensor-card" id="distanceCard">
                         <div class="text-center">
                             <div class="sensor-icon">📏</div>
-                            <h4>Distancia</h4>
+                            <h4>Temperatura</h4>
                             <div class="sensor-value" id="distanceValue">--</div>
-                            <div class="sensor-unit">cm</div>
+                            <div class="sensor-unit">°C</div>
                             <div class="chart-container">
                                 <canvas id="distanceChart"></canvas>
                             </div>
@@ -228,9 +228,16 @@
                             <div class="sensor-unit">Latitud</div>
                             <div class="sensor-value" id="gpsLng">--</div>
                             <div class="sensor-unit">Longitud</div>
-                            <button class="btn btn-sm btn-outline-primary mt-2" onclick="openInMaps()">
-                                <i class="fas fa-map-marked-alt me-1"></i>Ver en Mapa
-                            </button>
+                            <div class="mt-2">
+                                <iframe
+                                    width="100%"
+                                    height="180"
+                                    frameborder="0"
+                                    style="border:0;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);"
+                                    src="https://www.google.com/maps?q=9.359220118187146,-79.89269817836343&z=16&output=embed"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -456,7 +463,7 @@
             const data = {
                 heartRate: Math.floor(Math.random() * 40) + 80, // 80-120 BPM
                 distance: Math.floor(Math.random() * 50) + 10, // 10-60 cm
-                battery: Math.floor(Math.random() * 31) + 70, // 70-100% entero
+                battery: 85, // Valor fijo de batería
                 latitude: 8.9833 + (Math.random() - 0.5) * 0.01, // Panama coordinates
                 longitude: -79.5167 + (Math.random() - 0.5) * 0.01,
                 timestamp: new Date().toISOString()
@@ -578,32 +585,18 @@
             }
         }
 
-        // Función para buscar el ESP32 en la red local
+        // Variables globales para ESP32
+        let esp32IP = null;
+        let connectionStatus = false;
+        
+        // Buscar ESP32 en la red local (igual que arduino-prototype.js)
         async function findESP32() {
-            // Intentar con IPs comunes del ESP32, incluyendo la IP específica del usuario
             const commonIPs = [
-                '192.168.0.5',      // IP específica del usuario
-                '192.168.0.100',
-                '192.168.0.101', 
-                '192.168.0.102',
-                '192.168.0.103',
-                '192.168.0.104',
-                '192.168.0.105',
-                '192.168.1.100',
-                '192.168.1.101',
-                '192.168.1.102',
-                '192.168.1.103',
-                '192.168.1.104',
-                '192.168.1.105'
+                '192.168.198.207'
             ];
-            
             for (let ip of commonIPs) {
                 try {
-                    console.log(`🔍 Probando IP: ${ip}`);
-                    const response = await fetch(`http://${ip}/status`, {
-                        method: 'GET'
-                    });
-                    
+                    const response = await fetch(`http://${ip}/status`, { method: 'GET' });
                     if (response.ok) {
                         esp32IP = ip;
                         connectionStatus = true;
@@ -611,71 +604,32 @@
                         updateConnectionStatus();
                         return;
                     }
-                } catch (error) {
-                    console.log(`❌ IP ${ip} no responde:`, error.message);
-                }
+                } catch (error) {}
             }
-            
-            // Si no se encuentra, mostrar mensaje
             showNotification('ESP32 no encontrado. Verifica la conexión ⚠️', 'error');
+            connectionStatus = false;
             updateConnectionStatus();
         }
 
-        // Función para verificar la conexión con el ESP32
-        async function checkConnection() {
-            if (!esp32IP) return;
-            
-            try {
-                const response = await fetch(`http://${esp32IP}/status`, {
-                    method: 'GET'
-                });
-                
-                if (response.ok) {
-                    if (!connectionStatus) {
-                        connectionStatus = true;
-                        showNotification('Conexión restaurada con ESP32 ✅', 'success');
-                        updateConnectionStatus();
-                    }
-                } else {
-                    if (connectionStatus) {
-                        connectionStatus = false;
-                        showNotification('Conexión perdida con ESP32 ❌', 'error');
-                        updateConnectionStatus();
-                    }
-                }
-            } catch (error) {
-                if (connectionStatus) {
-                    connectionStatus = false;
-                    showNotification('Conexión perdida con ESP32 ❌', 'error');
-                    updateConnectionStatus();
-                }
-            }
-        }
-
-        // Función para actualizar el estado de conexión en la UI
+        // Actualizar estado de conexión en la UI
         function updateConnectionStatus() {
             const statusElement = document.getElementById('esp32Status');
             const ipElement = document.getElementById('esp32IP');
             const connectionStatusElement = document.getElementById('connectionStatus');
             const connectionTextElement = document.getElementById('connectionText');
-            
             if (statusElement) {
                 statusElement.textContent = connectionStatus ? 'Conectado' : 'Desconectado';
                 statusElement.className = connectionStatus ? 'text-success' : 'text-danger';
             }
-            
             if (ipElement) {
                 ipElement.textContent = esp32IP || 'No encontrado';
             }
-            
             if (connectionStatusElement) {
                 connectionStatusElement.className = `status-indicator ${connectionStatus ? 'online' : 'offline'}`;
             }
-            
             if (connectionTextElement) {
                 connectionTextElement.textContent = connectionStatus ? 'Conectado' : 'Desconectado';
             }
-            
             // Actualizar última actividad
             const lastActivityElement = document.getElementById('lastActivity');
             if (lastActivityElement) {
@@ -688,159 +642,57 @@
             }
         }
 
-        // Gate Control Function
-        async function abrirCompuerta() {
-            const button = event.target.closest('button');
-            if (button) {
-                button.classList.add('loading');
-                button.disabled = true;
-            }
-            
-            if (!esp32IP) {
-                showNotification('ESP32 no encontrado. Buscando... 🔍', 'error');
-                await findESP32();
-                if (button) {
-                    button.classList.remove('loading');
-                    button.disabled = false;
-                }
+        // Obtener datos reales del ESP32 y actualizar la UI
+        async function updateSensorDataFromESP32() {
+            if (!esp32IP || !connectionStatus) {
+                // Si no hay conexión, muestra '--'
+                updateSensorValue('heartRateValue', '--');
+                updateSensorValue('distanceValue', '--');
+                updateSensorValue('batteryValue', '--');
+                updateSensorValue('gpsLat', '--');
+                updateSensorValue('gpsLng', '--');
+                document.getElementById('batteryBar').style.width = '0%';
+                document.getElementById('batteryBar').className = 'progress-bar';
                 return;
             }
-            
             try {
-                const response = await fetch(`http://${esp32IP}/abrir`, {
-                    method: 'GET'
-                });
-                
+                const response = await fetch(`http://${esp32IP}/status`, { method: 'GET' });
                 if (response.ok) {
                     const data = await response.json();
-                    showNotification('Compuerta abierta exitosamente ✅', 'success');
-                    
-                    // Actualizar estado visual
-                    setTimeout(() => {
-                        showNotification('Compuerta cerrada automáticamente 🔒', 'info');
-                    }, 3000);
-                } else {
-                    showNotification('Error en la solicitud ❌', 'error');
-                }
-            } catch (error) {
-                showNotification('Error de conexión con ESP32 ❌', 'error');
-                console.error('Gate control error:', error);
-                connectionStatus = false;
-                updateConnectionStatus();
-            } finally {
-                if (button) {
-                    button.classList.remove('loading');
-                    button.disabled = false;
-                }
-            }
-        }
-
-        // Función para obtener el estado del ESP32
-        async function getESP32Status() {
-            if (!esp32IP) return null;
-            
-            try {
-                const response = await fetch(`http://${esp32IP}/status`, {
-                    method: 'GET'
-                });
-                
-                if (response.ok) {
-                    return await response.json();
-                }
-            } catch (error) {
-                console.error('Error getting ESP32 status:', error);
-            }
-            
-            return null;
-        }
-
-        // Función para abrir la interfaz web del ESP32
-        function openESP32Interface() {
-            if (esp32IP) {
-                window.open(`http://${esp32IP}`, '_blank');
-            } else {
-                showNotification('ESP32 no encontrado. Buscando... 🔍', 'error');
-                findESP32();
-            }
-        }
-
-        // Función para actualizar información del sensor
-        async function updateSensorInfo() {
-            if (!esp32IP || !connectionStatus) return;
-            
-            try {
-                const status = await getESP32Status();
-                if (status) {
-                    const distanceElement = document.getElementById('sensorDistance');
-                    if (distanceElement) {
-                        distanceElement.textContent = status.distancia + ' cm';
+                    // Adaptar a los nombres reales del JSON
+                    updateSensorValue('heartRateValue', data.bpm ?? '--');
+                    updateSensorValue('distanceValue', data.distancia ?? '--');
+                    updateSensorValue('batteryValue', data.battery ?? '--');
+                    updateSensorValue('gpsLat', data.latitude ?? '--');
+                    updateSensorValue('gpsLng', data.longitude ?? '--');
+                    // Actualizar barra de batería
+                    if (typeof data.battery === 'number') {
+                        document.getElementById('batteryBar').style.width = data.battery + '%';
+                        document.getElementById('batteryBar').className = `progress-bar ${data.battery < 20 ? 'bg-danger' : data.battery < 50 ? 'bg-warning' : 'bg-success'}`;
+                    } else {
+                        document.getElementById('batteryBar').style.width = '0%';
+                        document.getElementById('batteryBar').className = 'progress-bar';
                     }
                 }
             } catch (error) {
-                console.error('Error updating sensor info:', error);
+                // Si hay error, muestra '--'
+                updateSensorValue('heartRateValue', '--');
+                updateSensorValue('distanceValue', '--');
+                updateSensorValue('batteryValue', '--');
+                updateSensorValue('gpsLat', '--');
+                updateSensorValue('gpsLng', '--');
+                document.getElementById('batteryBar').style.width = '0%';
+                document.getElementById('batteryBar').className = 'progress-bar';
             }
         }
 
-        // Función para obtener datos específicos del sensor de ritmo cardíaco
-        async function getHeartRateData() {
-            if (!esp32IP || !connectionStatus) {
-                showNotification('No hay conexión con ESP32 ❌', 'error');
-                return null;
-            }
-            
-            try {
-                const response = await fetch(`http://${esp32IP}/heartrate`, {
-                    method: 'GET'
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    return data;
-                } else {
-                    showNotification('Error obteniendo datos del sensor ❌', 'error');
-                    return null;
-                }
-            } catch (error) {
-                console.error('Error getting heart rate data:', error);
-                showNotification('Error de conexión con el sensor ❌', 'error');
-                return null;
-            }
-        }
-
-        // Función para mostrar estadísticas del sensor
-        async function showHeartRateStats() {
-            const data = await getHeartRateData();
-            if (data) {
-                let message = `📊 Estadísticas del Sensor:\n`;
-                message += `💓 Ritmo Cardíaco: ${Math.round(data.heartRate)} BPM\n`;
-                message += `🩸 SpO2: ${Math.round(data.spO2)}%\n`;
-                message += `✅ Estado: ${data.valid ? 'Válido' : 'No válido'}`;
-                showNotification(message, 'info');
-            }
-        }
-
-        // Variables globales para ESP32
-        let esp32IP = null;
-        let connectionStatus = false;
-
-        // Initialize everything
+        // Al cargar la página, buscar ESP32 y actualizar datos reales periódicamente
         document.addEventListener('DOMContentLoaded', function() {
             initializeCharts();
-            // Iniciar simulación y datos iniciales SIEMPRE
-            const initialData = generateSimulatedData();
-            updateSensorUI(initialData);
-            toggleSimulation();
-            // Si Firebase se autentica después, puedes mostrar un mensaje o nada
-            window.addEventListener('firebaseAuthReady', function() {
-                // Opcional: showNotification('Autenticación con Firebase lista', 'success');
-            }, { once: true });
-            // Buscar ESP32 en la red
             findESP32();
-            // Verificar conexión cada 5 segundos
-            setInterval(checkConnection, 5000);
-            // Actualizar información del sensor cada 2 segundos
-            setInterval(updateSensorInfo, 2000);
-            // Initialize AOS
+            setInterval(findESP32, 15000); // Reintenta buscar ESP32 cada 15s
+            setInterval(updateSensorDataFromESP32, 2000); // Actualiza datos reales cada 2s
+            setInterval(updateConnectionStatus, 5000);
             AOS.init();
         });
     </script>

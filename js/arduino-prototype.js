@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
 async function findESP32() {
     // Intentar con IPs comunes del ESP32, incluyendo la IP específica del usuario
     const commonIPs = [
-        '192.168.110.26',      // IP de tu ESP32
+        '192.168.198.207',
         '10.17.194.207',    // IP anterior
         '192.168.0.5',      // IP específica del usuario
         '192.168.0.100',
